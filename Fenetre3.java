@@ -15,6 +15,10 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -38,14 +42,15 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
     private final JPanel p0, p1, nord, p2, p3;
-
+    private final ChartPanel p4;
+    
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
      */
     public Fenetre3() {
 
         // creation par heritage de la fenetre
-        super("Recherche");
+        super("Reporting");
 
         // mise en page (layout) de la fenetre visible
         setLayout(new BorderLayout());
@@ -90,6 +95,7 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         nord = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
+        
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 11));
@@ -99,22 +105,22 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         p3.setLayout(new GridLayout(1, 3));
 
         // ajout des objets graphqiues dans les panneaux
-        p0.add(nameECE);
-        p0.add(nameECETexte);
-        p0.add(passwdECE);
-        p0.add(passwdECETexte);
-        p0.add(loginBDD);
-        p0.add(loginBDDTexte);
-        p0.add(passwdBDD);
-        p0.add(passwdBDDTexte);
-        p0.add(connect);
-        p0.add(nameBDD);
-        p0.add(nameBDDTexte);
-        p0.add(local);
-        p1.add(tab);
-        p1.add(lignes);
-        p1.add(req);
-        p1.add(res);
+//        p0.add(nameECE);
+//        p0.add(nameECETexte);
+//        p0.add(passwdECE);
+//        p0.add(passwdECETexte);
+//        p0.add(loginBDD);
+//        p0.add(loginBDDTexte);
+//        p0.add(passwdBDD);
+//        p0.add(passwdBDDTexte);
+//        p0.add(connect);
+//        p0.add(nameBDD);
+//        p0.add(nameBDDTexte);
+//        p0.add(local);
+//        p1.add(tab);
+//        p1.add(lignes);
+//        p1.add(req);
+//        p1.add(res);
         nord.add("North", p0);
         nord.add("North", p1);
         p2.add(listeDeTables);
@@ -148,8 +154,8 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         p1.setBackground(Color.LIGHT_GRAY);
 
         // disposition geographique des panneaux
-        add("North", nord);
-        add("Center", p2);
+       // add("North", nord);
+        //add("Center", p2);
         add("South", p3);
 
         // pour fermer la fenetre
@@ -159,6 +165,31 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
                 System.exit(0); // tout fermer												System.exit(0); // tout fermer
             }
         });
+        
+                // create a dataset... 
+DefaultPieDataset dataset = new DefaultPieDataset();
+ dataset.setValue("Category 1", 43.2);
+ dataset.setValue("Category 2", 27.9);
+ dataset.setValue("Category 3", 79.5);
+// create a chart... 
+JFreeChart chart = ChartFactory.createPieChart(
+ "Visualisation des données",
+ dataset, 
+ true, // legend?
+ true, // tooltips?
+ false // URLs?
+ );
+// create and display a frame... 
+//ChartFrame frame = new ChartFrame("First", chart);
+//ChartFrame frame = new ChartFrame("First", chart);
+//frame.pack();
+//frame.setVisible(true);
+         p4 = new ChartPanel(chart);
+
+        add("Center", p4);
+        
+        
+        
     }
 
     /**
