@@ -37,12 +37,20 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     private final JButton connect, exec, local;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p0, p1, nord, p2, p3, pBoutons;
+    private final JPanel p0, p1, nord, p2, p3;
+    
     //AWA
-    public JButton insertion;
-    public JButton suppression;
-    public JButton maj;
-
+    private final JPanel pDroit, pChoix, pChgt, pGauche, pGaucheBas;
+    public JRadioButton insertion, suppression, maj;
+    public JRadioButton docteur;
+    public JButton OK;
+    
+    //DOCTEUR
+    JLabel numero;
+    JTextField numeroText;
+    JLabel specialite;
+    JTextField specialiteText;
+    
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
      */
@@ -53,7 +61,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
 
         // mise en page (layout) de la fenetre visible
         setLayout(new BorderLayout());
-        setBounds(0, 0, 400, 400);
+        setBounds(0, 0, 600, 600);
         setResizable(true);
         setVisible(true);
 
@@ -62,7 +70,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         local = new JButton("Connexion locale");
         exec = new JButton("Executer");
         
-
+        OK=new JButton("OK");
+        
         // creation des listes pour les tables et les requetes
         listeDeTables = new java.awt.List(10, false);
         listeDeRequetes = new java.awt.List(10, false);
@@ -89,7 +98,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         loginBDD = new JLabel("login base :", JLabel.CENTER);
         passwdBDD = new JLabel("password base :", JLabel.CENTER);
         nameBDD = new JLabel("nom base :", JLabel.CENTER);
-        
         requeteLabel = new JLabel("Entrez votre requete de sélection :", JLabel.CENTER);
 
         // creation des panneaux
@@ -98,13 +106,27 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         nord = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
+        
+        pDroit=new JPanel();
+        pChoix=new JPanel();
+        pChgt=new JPanel();
+        pGauche=new JPanel();
+        pGaucheBas=new JPanel();
+        
+        insertion=new JRadioButton("Insertion");
+        suppression=new JRadioButton("Suppression");
+        maj=new JRadioButton("Mise a jour");   
+        
+        docteur=new JRadioButton("docteur");
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 11));
         p1.setLayout(new GridLayout(1, 4));
         nord.setLayout(new GridLayout(2, 1));
-        p2.setLayout(new GridLayout(1, 4));
+        p2.setLayout(new GridLayout(1, 3)); //AWA
         p3.setLayout(new GridLayout(1, 3));
+        pDroit.setLayout(new GridLayout(3,1));// AWAWA
+        pGauche.setLayout(new GridLayout(2,1)); //AWA
 
         // ajout des objets graphqiues dans les panneaux
         p0.add(nameECE);
@@ -118,35 +140,30 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p0.add(connect);
         p0.add(nameBDD);
         p0.add(nameBDDTexte);
-        p0.add(local);
-        
+        p0.add(local);        
         p1.add(tab);
         p1.add(lignes);
         p1.add(req);
         p1.add(res);
-        
         nord.add("North", p0);
         nord.add("North", p1);
         
-        p2.add(listeDeTables);
+        pGauche.add(listeDeTables);
+        pGaucheBas.add(docteur);
+        pGauche.add(pGaucheBas);       
+        p2.add(pGauche);
         p2.add(fenetreLignes);
+        pChoix.add(insertion);
+        pChoix.add(suppression);
+        pChoix.add(maj);
+        pChoix.add(OK);
+        pDroit.add(pChoix);
+        pDroit.add(pChgt);
+        pDroit.add(fenetreRes);
+        p2.add(pDroit);
         
-        //p2.add(listeDeRequetes);
-        
-        pBoutons=new JPanel();
-        insertion=new JButton("Insertion");
-        suppression=new JButton("Suppression");
-        maj=new JButton("Mise a jour");
-        insertion.addActionListener(this);
-        suppression.addActionListener(this);
-        maj.addActionListener(this);
-        pBoutons.add(insertion);
-        pBoutons.add(suppression);
-        pBoutons.add(maj);
-
-        p2.add(pBoutons); //ajouter les 3 boutons
-        p2.add(fenetreRes);
-        
+        //p2.add(listeDeRequetes);    
+                
         p3.add(requeteLabel);
         p3.add(requeteTexte);
         p3.add(exec);
@@ -155,6 +172,12 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         connect.addActionListener(this);
         exec.addActionListener(this);
         local.addActionListener(this);
+        
+        docteur.addActionListener(this);
+        insertion.addActionListener(this);
+        suppression.addActionListener(this);
+        maj.addActionListener(this);
+        OK.addActionListener(this);
         
         nameECETexte.addActionListener(this);
         passwdECETexte.addActionListener(this);
@@ -169,16 +192,31 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         lignes.setBackground(Color.YELLOW);
         req.setBackground(Color.RED);
         res.setBackground(Color.BLUE);
-        listeDeTables.setBackground(Color.YELLOW);
-        fenetreLignes.setBackground(Color.RED);
-        listeDeRequetes.setBackground(Color.BLUE);
-        fenetreRes.setBackground(Color.GREEN);
+        
         p1.setBackground(Color.LIGHT_GRAY);
+        listeDeTables.setBackground(Color.GREEN);
+        pGaucheBas.setBackground(Color.YELLOW);        
+        fenetreLignes.setBackground(Color.RED);
+        pChoix.setBackground(Color.BLUE);
+        pChgt.setBackground(Color.PINK);
+        fenetreRes.setBackground(Color.ORANGE);
+        
+        //listeDeRequetes.setBackground(Color.BLUE);
+        //pChgt.setBackground(Color.BLUE);    
 
         // disposition geographique des panneaux
         add("North", nord);
         add("Center", p2);
         add("South", p3);
+        
+        
+        //DOCTEUR
+        numero=new JLabel("numero");
+        numeroText=new JTextField(8);
+        specialite=new JLabel("specialite");
+        specialiteText=new JTextField(8);
+        
+        
 
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
@@ -410,22 +448,19 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                     afficherRequetes();
                     afficherRequetesMaj(); //AWA
 
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
+                    /* se positionner sur la première table et requête de selection
+                    //listeDeTables.select(0);
+                    //listeDeRequetes.select(0);
 
                     // afficher les champs de la table sélectionnée
                     String nomTable = listeDeTables.getSelectedItem();
-
                     // recuperer les lignes de la table selectionnee
                     afficherLignes(nomTable);
 
                     // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-                    // afficher les résultats de la requete selectionnee AWWA
-                    afficherRes(requeteSelectionnee);
-                    //afficherResMaj(requeteSelectionnee);
+                    //String requeteSelectionnee = listeDeRequetes.getSelectedItem();
+                    // afficher les résultats de la requete selectionnee
+                    //afficherRes(requeteSelectionnee);*/
                   
                 } catch (ClassNotFoundException cnfe) {
                     System.out.println("Connexion echouee : probleme de classe");
@@ -436,29 +471,49 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 e.printStackTrace();
             }         
         }
-        else if(source==insertion)
+        else if(source==OK)
         {
-            try 
+            if(listeDeTables.getSelectedItem()=="docteur" && insertion.isSelected())
             {
-                maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES(45, 'Cardiologue');");
-                fenetreRes.append("insertion reussie");
-            } 
-            catch (SQLException ex) 
-            {
-                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                fenetreRes.append("probleme insertion");
+                //if(insertion.isSelected())
+                //{
+                   
+                    try
+                    {
+                        int numeroVal=Integer.parseInt(numeroText.getText());
+                        String specialiteVal=specialiteText.getText();
+                        //maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES (25, 'Cardiologue');"); //REQUETE VALIDE
+                        maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES('" + numeroVal + "', '" + specialiteVal + "');"); //REQUETE VALIDE
+                    
+                        fenetreRes.removeAll();
+                        fenetreRes.append("insertion reussie");
+                    } 
+                    catch (SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.removeAll();
+                        fenetreRes.append("probleme insertion");
+                        fenetreRes.append(numeroText.getText());
+                        fenetreRes.append(specialiteText.getText());
+
+                    }
+                //}
             }
-        }    
+        }
+       
+        
         else if(source==suppression)
         {
             try
             {
                 maconnexion.executeUpdate("DELETE from docteur WHERE numero=45");
+                fenetreRes.removeAll();
                 fenetreRes.append("supression reussie");
             }
             catch(SQLException ex) 
             {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                fenetreRes.removeAll();
                 fenetreRes.append("probleme suppression");
             }
            
@@ -468,11 +523,13 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
             try
             {
                 maconnexion.executeUpdate("UPDATE docteur SET specialite='Generaliste' WHERE numero=45");
+                fenetreRes.removeAll();
                 fenetreRes.append("modification reussie");
             }
             catch(SQLException ex) 
             {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                fenetreRes.removeAll();
                 fenetreRes.append("probleme modification");
             }
            
@@ -515,13 +572,29 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 afficherRes(requeteSelectionnee);
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }   
+            }
         }
         
         else if (evt.getSource() == listeDeTables) {
             // afficher les lignes de la table sélectionnée
             String nomTable = listeDeTables.getSelectedItem();
             afficherLignes(nomTable);
+            
+            if(nomTable=="docteur")
+            {
+                pChgt.removeAll();
+                fenetreRes.setText("");
+                /*JLabel numero=new JLabel("numero");
+                JTextField numeroText=new JTextField(8);
+                JLabel specialite=new JLabel("specialite");
+                JTextField specialiteText=new JTextField(8);*/
+                pChgt.add(numero);
+                pChgt.add(numeroText);
+                pChgt.add(specialite);
+                pChgt.add(specialiteText);
+                
+                fenetreRes.append("Entrez les changements desires");
+            }
         }
     }
     
