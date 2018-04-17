@@ -15,10 +15,12 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartPanel;
 
 /**
  *
@@ -28,22 +30,20 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author segado
  */
 public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
+
     /*
      * Attribut privés : objets de Connexion, AWT et Swing
      * 
      */
-
     public Connexion maconnexion;
     private final JLabel tab, req, res, lignes;
-    public JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, requeteLabel;
-    public JTextField nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte;
-    public JPasswordField passwdECETexte, passwdBDDTexte;
-    public JButton connect, exec, local;
+    private final JLabel requeteLabel;
+    private final JTextField requeteTexte;
+    private final JButton exec;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
     private final JPanel p0, p1, nord, p2, p3;
-    private final ChartPanel p4;
-    
+
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
      */
@@ -53,14 +53,15 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         super("Reporting");
 
         // mise en page (layout) de la fenetre visible
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(1,2));
+//        setLayout(new BorderLayout());
         setBounds(0, 0, 400, 400);
         setResizable(true);
         setVisible(false);
 
         // creation des boutons
-        connect = new JButton("Connexion ECE");
-        local = new JButton("Connexion locale");
+//        connect = new JButton("Connexion ECE");
+//        local = new JButton("Connexion locale");
         exec = new JButton("Executer");
 
         // creation des listes pour les tables et les requetes
@@ -68,11 +69,11 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         listeDeRequetes = new java.awt.List(10, false);
 
         // creation des textes
-        nameECETexte = new JTextField();
-        passwdECETexte = new JPasswordField(8);
-        loginBDDTexte = new JTextField();
-        passwdBDDTexte = new JPasswordField(8);
-        nameBDDTexte = new JTextField();
+//        nameECETexte = new JTextField();
+//        passwdECETexte = new JPasswordField(8);
+//        loginBDDTexte = new JTextField();
+//        passwdBDDTexte = new JPasswordField(8);
+//        nameBDDTexte = new JTextField();
         fenetreLignes = new JTextArea();
         fenetreRes = new JTextArea();
         requeteTexte = new JTextField();
@@ -82,11 +83,11 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         lignes = new JLabel("Lignes", JLabel.CENTER);
         req = new JLabel("Requetes de sélection", JLabel.CENTER);
         res = new JLabel("Résultats requête", JLabel.CENTER);
-        nameECE = new JLabel("login ECE :", JLabel.CENTER);
-        passwdECE = new JLabel("password ECE :", JLabel.CENTER);
-        loginBDD = new JLabel("login base :", JLabel.CENTER);
-        passwdBDD = new JLabel("password base :", JLabel.CENTER);
-        nameBDD = new JLabel("nom base :", JLabel.CENTER);
+//        nameECE = new JLabel("login ECE :", JLabel.CENTER);
+//        passwdECE = new JLabel("password ECE :", JLabel.CENTER);
+//        loginBDD = new JLabel("login base :", JLabel.CENTER);
+//        passwdBDD = new JLabel("password base :", JLabel.CENTER);
+//        nameBDD = new JLabel("nom base :", JLabel.CENTER);
         requeteLabel = new JLabel("Entrez votre requete de sélection :", JLabel.CENTER);
 
         // creation des panneaux
@@ -95,32 +96,22 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         nord = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
-        
+//        cp1 = new JPanel();
+//        cp2 = new JPanel();
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 11));
         p1.setLayout(new GridLayout(1, 4));
         nord.setLayout(new GridLayout(2, 1));
-        p2.setLayout(new GridLayout(1, 4));
+//        p2.setLayout(new GridLayout(1, 4));
+//        p2.setLayout(new );
         p3.setLayout(new GridLayout(1, 3));
 
         // ajout des objets graphqiues dans les panneaux
-//        p0.add(nameECE);
-//        p0.add(nameECETexte);
-//        p0.add(passwdECE);
-//        p0.add(passwdECETexte);
-//        p0.add(loginBDD);
-//        p0.add(loginBDDTexte);
-//        p0.add(passwdBDD);
-//        p0.add(passwdBDDTexte);
-//        p0.add(connect);
-//        p0.add(nameBDD);
-//        p0.add(nameBDDTexte);
-//        p0.add(local);
-//        p1.add(tab);
-//        p1.add(lignes);
-//        p1.add(req);
-//        p1.add(res);
+        p1.add(tab);
+        p1.add(lignes);
+        p1.add(req);
+        p1.add(res);
         nord.add("North", p0);
         nord.add("North", p1);
         p2.add(listeDeTables);
@@ -132,13 +123,7 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         p3.add(exec);
 
         // ajout des listeners
-        connect.addActionListener(this);
         exec.addActionListener(this);
-        local.addActionListener(this);
-        nameECETexte.addActionListener(this);
-        passwdECETexte.addActionListener(this);
-        loginBDDTexte.addActionListener(this);
-        passwdBDDTexte.addActionListener(this);
         listeDeTables.addItemListener(this);
         listeDeRequetes.addItemListener(this);
 
@@ -153,11 +138,6 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         fenetreRes.setBackground(Color.WHITE);
         p1.setBackground(Color.LIGHT_GRAY);
 
-        // disposition geographique des panneaux
-       // add("North", nord);
-        //add("Center", p2);
-        add("South", p3);
-
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
             @Override
@@ -165,31 +145,7 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
                 System.exit(0); // tout fermer												System.exit(0); // tout fermer
             }
         });
-        
-                // create a dataset... 
-DefaultPieDataset dataset = new DefaultPieDataset();
- dataset.setValue("Category 1", 43.2);
- dataset.setValue("Category 2", 27.9);
- dataset.setValue("Category 3", 79.5);
-// create a chart... 
-JFreeChart chart = ChartFactory.createPieChart(
- "Visualisation des données",
- dataset, 
- true, // legend?
- true, // tooltips?
- false // URLs?
- );
-// create and display a frame... 
-//ChartFrame frame = new ChartFrame("First", chart);
-//ChartFrame frame = new ChartFrame("First", chart);
-//frame.pack();
-//frame.setVisible(true);
-         p4 = new ChartPanel(chart);
 
-        add("Center", p4);
-        
-        
-        
     }
 
     /**
@@ -204,7 +160,6 @@ JFreeChart chart = ChartFactory.createPieChart(
         maconnexion.ajouterTable("malade");
         maconnexion.ajouterTable("service");
         maconnexion.ajouterTable("soigne");
-        
     }
 
     /**
@@ -334,119 +289,6 @@ JFreeChart chart = ChartFactory.createPieChart(
     public void actionPerformed(ActionEvent evt) {
         Object source = evt.getSource();
 
-        // tester cas de la commande evenementielle
-        if (source == connect) {
-            ArrayList<String> liste;
-            String passwdECEString = new String(passwdECETexte.getPassword());
-            String passwdBDDString = new String(passwdBDDTexte.getPassword());
-            //try {
-                //try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                   // maconnexion = new Connexion(nameECETexte.getText(), passwdECEString,
-                       //     loginBDDTexte.getText(), passwdBDDString);
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
-
-                    // initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-                    remplirRequetes();
-                    remplirRequetesMaj();
-
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-                    afficherRequetes();
-
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                    // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-
-                    // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-                try {
-                    // afficher les résultats de la requete selectionnee
-                    afficherRes(requeteSelectionnee);
-                    //} catch (ClassNotFoundException cnfe) {
-                    //  System.out.println("Connexion echouee : probleme de classe");
-                    //cnfe.printStackTrace();
-                    // }
-                    //} catch (SQLException e) {
-                    //  System.out.println("Connexion echouee : probleme SQL");
-                    // e.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            //}
-//        } else if (source == local) {
-//            ArrayList<String> liste;
-//            try {
-//                //try {
-//                    // tentative de connexion si les 4 attributs sont remplis
-//                    //maconnexion = new Connexion(nameBDDTexte.getText(), "root", "");
-//
-//                    // effacer les listes de tables et de requêtes
-//                    listeDeTables.removeAll();
-//                    listeDeRequetes.removeAll();
-//
-//                    // initialisation de la liste des requetes de selection et de MAJ
-//                    remplirTables();
-//                    remplirRequetes();
-//                    remplirRequetesMaj();
-//
-//                    // afficher la liste de tables et des requetes
-//                    afficherTables();
-//                    afficherRequetes();
-//
-//                    // se positionner sur la première table et requête de selection
-//                    listeDeTables.select(0);
-//                    listeDeRequetes.select(0);
-//
-//                    // afficher les champs de la table sélectionnée
-//                    String nomTable = listeDeTables.getSelectedItem();
-//
-//                    // recuperer les lignes de la table selectionnee
-//                    afficherLignes(nomTable);
-//
-//                    // recuperer la liste des lignes de la requete selectionnee
-//                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-//
-//                    // afficher les résultats de la requete selectionnee
-//                    afficherRes(requeteSelectionnee);
-//                //} catch (ClassNotFoundException cnfe) {
-//                  //  System.out.println("Connexion echouee : probleme de classe");
-//                    //cnfe.printStackTrace();
-//                //}
-//            } catch (SQLException e) {
-//                System.out.println("Connexion echouee : probleme SQL");
-//                e.printStackTrace();
-//            }
-        } else if (source == exec) {
-            String requeteSelectionnee = requeteTexte.getText(); // récupérer le texte de la requête
-
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            try {
-                // afficher les résultats de la requete selectionnee
-                if (afficherRes(requeteSelectionnee) != null) {
-                    maconnexion.ajouterRequete(requeteSelectionnee);
-                    listeDeRequetes.removeAll();
-                    afficherRequetes();
-                }
-
-            } catch (SQLException ex) {
-
-            }
-
-        }
     }
 
     /**
@@ -464,7 +306,7 @@ JFreeChart chart = ChartFactory.createPieChart(
             try {
                 afficherRes(requeteSelectionnee);
             } catch (SQLException ex) {
-                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Fenetre3.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getSource() == listeDeTables) {
             // afficher les lignes de la table sélectionnée
@@ -472,57 +314,69 @@ JFreeChart chart = ChartFactory.createPieChart(
             afficherLignes(nomTable);
         }
     }
-    
-    
-    public void init(){
-            ArrayList<String> liste;
-            try {
-                //try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                    //maconnexion = new Connexion(nameBDDTexte.getText(), "root", "");
 
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
+    public void init() {
+        String a;
+        int i,j,k,l;
+        ArrayList<String> liste;
 
-                    // initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-                    remplirRequetes();
-                    remplirRequetesMaj();
+        try {
+// ------ Camembert répartition infirmiers jour/nuit
+// Extraction des infos de la base
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(*) FROM infirmier WHERE rotation=\"JOUR\"");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            i = Integer.parseInt(a);
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(*) FROM infirmier WHERE rotation=\"NUIT\"");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            j = Integer.parseInt(a);
+// create a dataset... 
+            DefaultPieDataset dataset1 = new DefaultPieDataset();
+            dataset1.setValue("Jour "+i, i);
+            dataset1.setValue("Nuit "+j, j);
+// create a chart... 
+            JFreeChart chart1 = ChartFactory.createPieChart(
+                    "Rotation infirmiers",
+                    dataset1,
+                    true, // legend?
+                    true, // tooltips?
+                    false // URLs?
+            );
+// create and display a ... 
+            ChartPanel cp1 = new ChartPanel(chart1);
+            add("East", cp1);
+// ------ Camembert 
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(DISTINCT hospitalisation.no_chambre,hospitalisation.code_service) FROM chambre,hospitalisation WHERE hospitalisation.no_chambre=chambre.no_chambre AND chambre.code_service=hospitalisation.code_service;");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            k = Integer.parseInt(a);
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(*) FROM chambre;");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            l = Integer.parseInt(a);
+            l=l-k;
 
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-                    afficherRequetes();
+           // System.out.println(liste);
+            // create a dataset... 
+            DefaultPieDataset dataset2 = new DefaultPieDataset();
+            dataset2.setValue("Libre "+l, l);
+            dataset2.setValue("Occupé "+k, k);
+// create a chart... 
+            JFreeChart chart2 = ChartFactory.createPieChart(
+                    "Occupation chambres",
+                    dataset2,
+                    true, // legend?
+                    true, // tooltips?
+                    false // URLs?
+            );
+// create and display a ... 
+            ChartPanel cp2 = new ChartPanel(chart2);
+            add("West", cp2);
 
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                    // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-
-                    // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-                    // afficher les résultats de la requete selectionnee
-                    afficherRes(requeteSelectionnee);
-                //} catch (ClassNotFoundException cnfe) {
-                  //  System.out.println("Connexion echouee : probleme de classe");
-                    //cnfe.printStackTrace();
-                //}
-            } catch (SQLException e) {
-                System.out.println("Connexion echouee : probleme SQL");
-                e.printStackTrace();
-            }
-    
-    
-    
-    }
-
-    void addActionListener(Controleur aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } catch (SQLException ex) {
+            System.out.println("Problème remplirChampsRequete !");
+//                Logger.getLogger(TestProjet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
