@@ -40,16 +40,69 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     private final JPanel p0, p1, nord, p2, p3;
     
     //AWA
-    private final JPanel pDroit, pChoix, pChgt, pGauche, pGaucheBas;
+    private final JPanel pDroit, pChoix, pChgt;
     public JRadioButton insertion, suppression, maj;
-    public JRadioButton docteur;
     public JButton OK;
     
     //DOCTEUR
     JLabel numero;
     JTextField numeroText;
     JLabel specialite;
-    JTextField specialiteText;
+    JTextField specialiteText;  
+    //CHAMBRE
+    JLabel code_service;
+    JTextField code_serviceText;
+    JLabel no_chambre;
+    JTextField no_chambreText;
+    JLabel surveillant;
+    JTextField surveillantText;
+    JLabel nb_lits;
+    JTextField nb_litsText;
+    //EMPLOYE
+    //meme numero que dans DOCTEUR
+    JLabel nom;
+    JTextField nomText;
+    JLabel prenom;
+    JTextField prenomText;
+    JLabel adresse;
+    JTextField adresseText;
+    JLabel tel;
+    JTextField telText;
+    //HOSPITALISATION
+    JLabel no_malade;
+    JTextField no_maladeText;
+    //meme code_service que dans CHAMBRE
+    //meme no_chambre que dans CHAMBRE
+    JLabel lit;
+    JTextField litText;
+    //INFIRMIER
+    //meme numero que dans DOCTEUR
+    //meme code_service que dans CHAMBRE
+    JLabel rotation;
+    JTextField rotationText;
+    JLabel salaire;
+    JTextField salaireText;
+    //MALADE
+    //meme numero que dans DOCTEUR
+    //meme nom que dans EMPLOYE
+    //meme prenom que dans EMPLOYE
+    //meme adresse que dans EMPLOYE
+    //meme tel que dans EMPLOYE
+    JLabel mutuelle;
+    JTextField mutuelleText;
+    //SERVICE
+    JLabel code;
+    JTextField codeText;
+    //meme nom que dans EMPLOYE
+    JLabel batiment;
+    JTextField batimentText;
+    JLabel directeur;
+    JTextField directeurText;
+    //SOIGNE
+    JLabel no_docteur;
+    JTextField no_docteurText;
+    //meme no_malade que dans HOSPITALISATION
+
     
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
@@ -110,23 +163,19 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         pDroit=new JPanel();
         pChoix=new JPanel();
         pChgt=new JPanel();
-        pGauche=new JPanel();
-        pGaucheBas=new JPanel();
         
         insertion=new JRadioButton("Insertion");
         suppression=new JRadioButton("Suppression");
         maj=new JRadioButton("Mise a jour");   
         
-        docteur=new JRadioButton("docteur");
-
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 11));
         p1.setLayout(new GridLayout(1, 4));
         nord.setLayout(new GridLayout(2, 1));
-        p2.setLayout(new GridLayout(1, 3)); //AWA
+        //p2.setLayout(new GridLayout(1, 3)); //AWA
+        p2.setLayout(new BorderLayout());
         p3.setLayout(new GridLayout(1, 3));
-        pDroit.setLayout(new GridLayout(3,1));// AWAWA
-        pGauche.setLayout(new GridLayout(2,1)); //AWA
+        pDroit.setLayout(new GridLayout(3,1));// AWA
 
         // ajout des objets graphqiues dans les panneaux
         p0.add(nameECE);
@@ -147,12 +196,9 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p1.add(res);
         nord.add("North", p0);
         nord.add("North", p1);
-        
-        pGauche.add(listeDeTables);
-        pGaucheBas.add(docteur);
-        pGauche.add(pGaucheBas);       
-        p2.add(pGauche);
-        p2.add(fenetreLignes);
+              
+        p2.add(listeDeTables, BorderLayout.WEST);
+        p2.add(fenetreLignes, BorderLayout.CENTER);
         pChoix.add(insertion);
         pChoix.add(suppression);
         pChoix.add(maj);
@@ -160,7 +206,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         pDroit.add(pChoix);
         pDroit.add(pChgt);
         pDroit.add(fenetreRes);
-        p2.add(pDroit);
+        p2.add(pDroit, BorderLayout.NORTH);
         
         //p2.add(listeDeRequetes);    
                 
@@ -173,7 +219,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         exec.addActionListener(this);
         local.addActionListener(this);
         
-        docteur.addActionListener(this);
         insertion.addActionListener(this);
         suppression.addActionListener(this);
         maj.addActionListener(this);
@@ -188,18 +233,17 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         listeDeRequetes.addItemListener(this);
 
         // couleurs des objets graphiques
-        tab.setBackground(Color.GREEN);
+        tab.setBackground(Color.BLUE);
         lignes.setBackground(Color.YELLOW);
         req.setBackground(Color.RED);
         res.setBackground(Color.BLUE);
         
         p1.setBackground(Color.LIGHT_GRAY);
-        listeDeTables.setBackground(Color.GREEN);
-        pGaucheBas.setBackground(Color.YELLOW);        
-        fenetreLignes.setBackground(Color.RED);
+        listeDeTables.setBackground(Color.LIGHT_GRAY);
+        fenetreLignes.setBackground(Color.PINK);
         pChoix.setBackground(Color.BLUE);
-        pChgt.setBackground(Color.PINK);
-        fenetreRes.setBackground(Color.ORANGE);
+        pChgt.setBackground(Color.ORANGE);
+        fenetreRes.setBackground(Color.GREEN);
         
         //listeDeRequetes.setBackground(Color.BLUE);
         //pChgt.setBackground(Color.BLUE);    
@@ -215,8 +259,60 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         numeroText=new JTextField(8);
         specialite=new JLabel("specialite");
         specialiteText=new JTextField(8);
-        
-        
+        //CHAMBRE
+        code_service=new JLabel("code_service");
+        code_serviceText=new JTextField(8);
+        no_chambre=new JLabel("no_chambre");
+        no_chambreText=new JTextField(8);
+        surveillant=new JLabel("surveillant");
+        surveillantText=new JTextField(8);
+        nb_lits=new JLabel("nb_lits");
+        nb_litsText=new JTextField(8);
+        //EMPLOYE
+        //meme numero que dans DOCTEUR
+        nom=new JLabel("nom");
+        nomText=new JTextField(8);
+        prenom=new JLabel("prenom");
+        prenomText=new JTextField(8);
+        adresse=new JLabel("adresse");
+        adresseText=new JTextField(8);
+        tel=new JLabel("nb_lits");
+        telText=new JTextField(8);
+        //HOSPITALISATION
+        no_malade=new JLabel("no_malade");
+        no_maladeText=new JTextField(8);
+        //meme code_service que dans CHAMBRE
+        //meme no_chambre que dans CHAMBRE
+        lit=new JLabel("lit");
+        litText=new JTextField(8);
+        //INFIRMIER
+        //meme numero que dans DOCTEUR
+        //meme code_service que dans CHAMBRE
+        rotation=new JLabel("rotation");
+        rotationText=new JTextField(8);
+        salaire=new JLabel("salaire");
+        salaireText=new JTextField(8);
+        //MALADE
+        //meme numero que dans DOCTEUR
+        //meme nom que dans EMPLOYE
+        //meme prenom que dans EMPLOYE
+        //meme adresse que dans EMPLOYE
+        //meme tel que dans EMPLOYE
+        mutuelle=new JLabel("mutuelle");
+        mutuelleText=new JTextField(8);
+        //SERVICE
+        code=new JLabel("code");
+        codeText=new JTextField(8);
+        //meme nom que dans EMPLOYE
+        batiment=new JLabel("batiment");
+        batimentText=new JTextField(8);
+        directeur=new JLabel("directeur");
+        directeurText=new JTextField(8);
+        //SOIGNE
+        no_docteur=new JLabel("no_docteur");
+        no_docteurText=new JTextField(8);
+        //meme no_malade que dans HOSPITALISATION
+
 
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
@@ -471,69 +567,166 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 e.printStackTrace();
             }         
         }
-        else if(source==OK)
+        else if(source==OK) //PROCEDER A UNE MAJ
         {
-            if(listeDeTables.getSelectedItem()=="docteur" && insertion.isSelected())
+            //DOCTEUR
+            if(listeDeTables.getSelectedItem()=="docteur" && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
             {
-                //if(insertion.isSelected())
-                //{
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    String specialiteVal=specialiteText.getText();
+                    //maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES (25, 'Cardiologue');"); //REQUETE VALIDE
+                    maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES('" + numeroVal + "', '" + specialiteVal + "');"); //REQUETE VALIDE
                    
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if(listeDeTables.getSelectedItem()=="docteur" && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    maconnexion.executeUpdate("DELETE from docteur WHERE numero= '" + numeroVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if(listeDeTables.getSelectedItem()=="docteur" && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    String specialiteVal=specialiteText.getText();
+                    maconnexion.executeUpdate("UPDATE docteur SET specialite= '" + specialiteVal + "' WHERE numero= '" + numeroVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("modification reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme modification");
+                }
+                maj.setSelected(false);
+            }
+            //CHAMBRE
+            if(listeDeTables.getSelectedItem()=="chambre" && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    String code_serviceVal=code_serviceText.getText();
+                    int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                    int surveillantVal=Integer.parseInt(surveillantText.getText());
+                    int nb_litsVal=Integer.parseInt(nb_litsText.getText());
+                    
+                    maconnexion.executeUpdate("INSERT INTO chambre(code_service, no_chambre, surveillant, nb_lits) VALUES('" + code_serviceVal + "', '" + no_chambreVal + "', '" + surveillantVal + "', '" + nb_litsVal + "');"); 
+                   
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if(listeDeTables.getSelectedItem()=="chambre" && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    String code_serviceVal=code_serviceText.getText();
+                    int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                    maconnexion.executeUpdate("DELETE from chambre WHERE code_service= '" + code_serviceVal + "' AND no_chambre= '" + no_chambreVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if(listeDeTables.getSelectedItem()=="chambre" && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                String code_serviceVal=code_serviceText.getText();
+                int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                //int surveillantVal=Integer.parseInt(surveillantText.getText());
+                //int nb_litsVal=Integer.parseInt(nb_litsText.getText());
+              
+                if(!"".equals(surveillantText.getText()) && "".equals(nb_litsText.getText()))
+                {
                     try
                     {
-                        int numeroVal=Integer.parseInt(numeroText.getText());
-                        String specialiteVal=specialiteText.getText();
-                        //maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES (25, 'Cardiologue');"); //REQUETE VALIDE
-                        maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES('" + numeroVal + "', '" + specialiteVal + "');"); //REQUETE VALIDE
-                    
-                        fenetreRes.removeAll();
-                        fenetreRes.append("insertion reussie");
-                    } 
-                    catch (SQLException ex) 
+                        int surveillantVal=Integer.parseInt(surveillantText.getText());
+                        maconnexion.executeUpdate("UPDATE chambre SET surveillant= '" + surveillantVal + "' WHERE (code_service= '" + code_serviceVal + "' AND no_chambre= '" + no_chambreVal + "');");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
                     {
                         Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                        fenetreRes.removeAll();
-                        fenetreRes.append("probleme insertion");
-                        fenetreRes.append(numeroText.getText());
-                        fenetreRes.append(specialiteText.getText());
-
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
                     }
-                //}
+                }
+                if("".equals(surveillantText.getText()) && !"".equals(nb_litsText.getText()))
+                {
+                    try
+                    {
+                        int nb_litsVal=Integer.parseInt(nb_litsText.getText());
+                        maconnexion.executeUpdate("UPDATE chambre SET nb_lits= '" + nb_litsVal + "' WHERE (code_service= '" + code_serviceVal + "' AND no_chambre= '" + no_chambreVal + "');");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(surveillantText.getText()) && !"".equals(nb_litsText.getText()))
+                {
+                    try
+                    {
+                        int surveillantVal=Integer.parseInt(surveillantText.getText());
+                        int nb_litsVal=Integer.parseInt(nb_litsText.getText());
+                        maconnexion.executeUpdate("UPDATE chambre SET surveillant= '" + surveillantVal + "', nb_lits= '" + nb_litsVal + "' WHERE (code_service= '" + code_serviceVal + "' AND no_chambre= '" + no_chambreVal + "');");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
             }
         }
        
-        
-        else if(source==suppression)
-        {
-            try
-            {
-                maconnexion.executeUpdate("DELETE from docteur WHERE numero=45");
-                fenetreRes.removeAll();
-                fenetreRes.append("supression reussie");
-            }
-            catch(SQLException ex) 
-            {
-                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                fenetreRes.removeAll();
-                fenetreRes.append("probleme suppression");
-            }
-           
-        }
-        else if(source==maj)
-        {
-            try
-            {
-                maconnexion.executeUpdate("UPDATE docteur SET specialite='Generaliste' WHERE numero=45");
-                fenetreRes.removeAll();
-                fenetreRes.append("modification reussie");
-            }
-            catch(SQLException ex) 
-            {
-                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                fenetreRes.removeAll();
-                fenetreRes.append("probleme modification");
-            }
-           
-        }
+     
         else if (source == exec) {
             String requeteSelectionnee = requeteTexte.getText(); // récupérer le texte de la requête
 
@@ -580,20 +773,142 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
             String nomTable = listeDeTables.getSelectedItem();
             afficherLignes(nomTable);
             
-            if(nomTable=="docteur")
+            if("docteur".equals(nomTable))
             {
                 pChgt.removeAll();
+                pChgt.setVisible(false);
                 fenetreRes.setText("");
-                /*JLabel numero=new JLabel("numero");
-                JTextField numeroText=new JTextField(8);
-                JLabel specialite=new JLabel("specialite");
-                JTextField specialiteText=new JTextField(8);*/
                 pChgt.add(numero);
                 pChgt.add(numeroText);
                 pChgt.add(specialite);
                 pChgt.add(specialiteText);
-                
-                fenetreRes.append("Entrez les changements desires");
+                pChgt.setVisible(true);
+                fenetreRes.append("Insertion: renseignez tous les champs\nSuppression: renseignez le numero\n"
+                        + "Mise a jour: renseignez le numero du docteur puis entrez la nouvelle specialite");
+            }
+            if("chambre".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(code_service);
+                pChgt.add(code_serviceText);
+                pChgt.add(no_chambre);
+                pChgt.add(no_chambreText);
+                pChgt.add(surveillant);
+                pChgt.add(surveillantText);
+                pChgt.add(nb_lits);
+                pChgt.add(nb_litsText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le numero de la chambre "
+                        + "et le code service\nMise a jour: renseignez le numero de la chambre et le code service "
+                        + "puis faites la (les) modification(s) souhaitee(s)");
+            }
+            if("employe".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(numero);
+                pChgt.add(numeroText);
+                pChgt.add(nom);
+                pChgt.add(nomText);
+                pChgt.add(prenom);
+                pChgt.add(prenomText);
+                pChgt.add(adresse);
+                pChgt.add(adresseText);
+                pChgt.add(tel);
+                pChgt.add(telText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le nom, le prenom "
+                        + "et le tel\nMise a jour: renseignez le nom, le prenom et le tel "
+                        + "puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+            }
+            if("hospitalisation".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(no_malade);
+                pChgt.add(no_maladeText);
+                pChgt.add(code_service);
+                pChgt.add(code_serviceText);
+                pChgt.add(no_chambre);
+                pChgt.add(no_chambreText);
+                pChgt.add(lit);
+                pChgt.add(litText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le no_malade\n"
+                        + "Mise a jour: renseignez le no_malade puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+            }
+            if("infirmier".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(numero);
+                pChgt.add(numeroText);
+                pChgt.add(code_service);
+                pChgt.add(code_serviceText);
+                pChgt.add(rotation);
+                pChgt.add(rotationText);
+                pChgt.add(salaire);
+                pChgt.add(salaireText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le numero\n"
+                        + "Mise a jour: renseignez le numero puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+            }
+            if("malade".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(numero);
+                pChgt.add(numeroText);
+                pChgt.add(nom);
+                pChgt.add(nomText);
+                pChgt.add(prenom);
+                pChgt.add(prenomText);
+                pChgt.add(adresse);
+                pChgt.add(adresseText);
+                pChgt.add(tel);
+                pChgt.add(telText);
+                pChgt.add(mutuelle);
+                pChgt.add(mutuelleText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le nom, le prenom "
+                        + "et le tel\nMise a jour: renseignez le nom, le prenom et le tel "
+                        + "puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+            }
+            if("service".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(code);
+                pChgt.add(codeText);
+                pChgt.add(nom);
+                pChgt.add(nomText);
+                pChgt.add(batiment);
+                pChgt.add(batimentText);
+                pChgt.add(directeur);
+                pChgt.add(directeurText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le code\n"
+                        + "Mise a jour: renseignez le code puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+            }
+            if("soigne".equals(nomTable))
+            {
+                pChgt.removeAll();
+                pChgt.setVisible(false);                
+                fenetreRes.setText("");
+                pChgt.add(no_docteur);
+                pChgt.add(no_docteurText);
+                pChgt.add(no_malade);
+                pChgt.add(no_maladeText);
+                pChgt.setVisible(true);                
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le code\n"
+                        + "Mise a jour: renseignez le code puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
             }
         }
     }
