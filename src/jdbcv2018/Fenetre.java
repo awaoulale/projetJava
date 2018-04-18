@@ -241,7 +241,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p1.setBackground(Color.LIGHT_GRAY);
         listeDeTables.setBackground(Color.LIGHT_GRAY);
         fenetreLignes.setBackground(Color.PINK);
-        pChoix.setBackground(Color.BLUE);
+        pChoix.setBackground(Color.RED);
         pChgt.setBackground(Color.ORANGE);
         fenetreRes.setBackground(Color.GREEN);
         
@@ -276,7 +276,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         prenomText=new JTextField(8);
         adresse=new JLabel("adresse");
         adresseText=new JTextField(8);
-        tel=new JLabel("nb_lits");
+        tel=new JLabel("tel");
         telText=new JTextField(8);
         //HOSPITALISATION
         no_malade=new JLabel("no_malade");
@@ -567,10 +567,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 e.printStackTrace();
             }         
         }
-        else if(source==OK) //PROCEDER A UNE MAJ
+        else if(source==OK) //PROCEDER A UNE MAJ (insertion, suppression ou modification)
         {
             //DOCTEUR
-            if(listeDeTables.getSelectedItem()=="docteur" && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            if("docteur".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
             {
                 try
                 {
@@ -590,7 +590,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 }
                 insertion.setSelected(false);
             }
-            if(listeDeTables.getSelectedItem()=="docteur" && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            if("docteur".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
             {
                 try
                 {
@@ -607,7 +607,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 }
                 suppression.setSelected(false);
             }
-            if(listeDeTables.getSelectedItem()=="docteur" && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            if("docteur".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
             {
                 try
                 {
@@ -626,7 +626,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 maj.setSelected(false);
             }
             //CHAMBRE
-            if(listeDeTables.getSelectedItem()=="chambre" && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            if("chambre".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
             {
                 try
                 {
@@ -648,7 +648,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 }
                 insertion.setSelected(false);
             }
-            if(listeDeTables.getSelectedItem()=="chambre" && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            if("chambre".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
             {
                 try
                 {
@@ -666,12 +666,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 }
                 suppression.setSelected(false);
             }
-            if(listeDeTables.getSelectedItem()=="chambre" && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            if("chambre".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
             {
                 String code_serviceVal=code_serviceText.getText();
                 int no_chambreVal=Integer.parseInt(no_chambreText.getText());
-                //int surveillantVal=Integer.parseInt(surveillantText.getText());
-                //int nb_litsVal=Integer.parseInt(nb_litsText.getText());
               
                 if(!"".equals(surveillantText.getText()) && "".equals(nb_litsText.getText()))
                 {
@@ -712,6 +710,613 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                         int surveillantVal=Integer.parseInt(surveillantText.getText());
                         int nb_litsVal=Integer.parseInt(nb_litsText.getText());
                         maconnexion.executeUpdate("UPDATE chambre SET surveillant= '" + surveillantVal + "', nb_lits= '" + nb_litsVal + "' WHERE (code_service= '" + code_serviceVal + "' AND no_chambre= '" + no_chambreVal + "');");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
+            }
+            //EMPLOYE
+            if("employe".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    String nomVal=nomText.getText();
+                    String prenomVal=prenomText.getText();
+                    String adresseVal=adresseText.getText();
+                    String telVal=telText.getText();
+                    maconnexion.executeUpdate("INSERT INTO employe(numero, nom, prenom, adresse, tel) VALUES('" + numeroVal + "', '" + nomVal + "', '" + prenomVal + "', '" + adresseVal + "', '" + telVal + "');");
+                   
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if("employe".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    maconnexion.executeUpdate("DELETE from employe WHERE numero= '" + numeroVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if("employe".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                int numeroVal=Integer.parseInt(numeroText.getText());
+              
+                if(!"".equals(adresseText.getText()) && "".equals(telText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        maconnexion.executeUpdate("UPDATE employe SET adresse= '" + adresseVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(adresseText.getText()) && !"".equals(telText.getText()))
+                {
+                    try
+                    {
+                        String telVal=telText.getText();
+                        maconnexion.executeUpdate("UPDATE employe SET tel= '" + telVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(adresseText.getText()) && !"".equals(telText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        String telVal=telText.getText();
+                        maconnexion.executeUpdate("UPDATE employe SET adresse= '" + adresseVal + "', tel= '" + telVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
+            }
+            //HOSPITALISATION
+            if("hospitalisation".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int no_maladeVal=Integer.parseInt(no_maladeText.getText());
+                    String code_serviceVal=code_serviceText.getText();
+                    int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                    int litVal=Integer.parseInt(litText.getText());
+                    maconnexion.executeUpdate("INSERT INTO hospitalisation(no_malade, code_service, no_chambre, lit) VALUES('" + no_maladeVal + "', '" + code_serviceVal + "', '" + no_chambreVal + "', '" + litVal + "');");
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if("hospitalisation".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int no_maladeVal=Integer.parseInt(no_maladeText.getText());
+                    maconnexion.executeUpdate("DELETE from hospitalisation WHERE no_malade= '" + no_maladeVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if("hospitalisation".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                int no_maladeVal=Integer.parseInt(no_maladeText.getText());
+              
+                if(!"".equals(litText.getText()) && "".equals(no_chambreText.getText()) && "".equals(code_serviceText.getText()))
+                {
+                    try
+                    {
+                        int litVal=Integer.parseInt(litText.getText());
+                        maconnexion.executeUpdate("UPDATE hospitalisation SET lit= '" + litVal + "' WHERE no_malade= '" + no_maladeVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(litText.getText()) && !"".equals(no_chambreText.getText()) && "".equals(code_serviceText.getText()))
+                {
+                    try
+                    {
+                        int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                        int litVal=Integer.parseInt(litText.getText());
+                        maconnexion.executeUpdate("UPDATE hospitalisation SET no_chambre='" + no_chambreVal + "', lit= '" + litVal + "' WHERE no_malade= '" + no_maladeVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(litText.getText()) && !"".equals(no_chambreText.getText()) && !"".equals(code_serviceText.getText()))
+                {
+                    try
+                    {
+                        String code_serviceVal=code_serviceText.getText();
+                        int no_chambreVal=Integer.parseInt(no_chambreText.getText());
+                        int litVal=Integer.parseInt(litText.getText());
+                        maconnexion.executeUpdate("UPDATE hospitalisation SET code_service='" + code_serviceVal + "', no_chambre='" + no_chambreVal + "', lit= '" + litVal + "' WHERE no_malade= '" + no_maladeVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
+            }
+            //INFIRMIER
+            if("infirmier".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    String code_serviceVal=code_serviceText.getText();
+                    String rotationVal=rotationText.getText();
+                    float salaireVal=Float.parseFloat(salaireText.getText());
+                    maconnexion.executeUpdate("INSERT INTO infirmier(numero, code_service, rotation, salaire) VALUES('" + numeroVal + "', '" + code_serviceVal + "', '" + rotationVal + "', '" + salaireVal + "');");
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if("infirmier".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    maconnexion.executeUpdate("DELETE from infirmier WHERE numero= '" + numeroVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if("infirmier".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                int numeroVal=Integer.parseInt(numeroText.getText());
+              
+                if(!"".equals(code_serviceText.getText()) && "".equals(rotationText.getText()) && "".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String code_serviceVal=code_serviceText.getText();
+                        maconnexion.executeUpdate("UPDATE infirmier SET code_service= '" + code_serviceVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(code_serviceText.getText()) && !"".equals(rotationText.getText()) && "".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String rotationVal=rotationText.getText();
+                        maconnexion.executeUpdate("UPDATE infirmier SET rotation= '" + rotationVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(code_serviceText.getText()) && "".equals(rotationText.getText()) && !"".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        float salaireVal=Float.parseFloat(salaireText.getText());
+                        maconnexion.executeUpdate("UPDATE infirmier SET salaire= '" + salaireVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(code_serviceText.getText()) && !"".equals(rotationText.getText()) && "".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String code_serviceVal=code_serviceText.getText();
+                        String rotationVal=rotationText.getText();
+                        maconnexion.executeUpdate("UPDATE infirmier SET code_service= '" + code_serviceVal + "', rotation='" + rotationVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(code_serviceText.getText()) && !"".equals(rotationText.getText()) && !"".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String rotationVal=rotationText.getText();
+                        float salaireVal=Float.parseFloat(salaireText.getText());
+                        maconnexion.executeUpdate("UPDATE infirmier SET rotation= '" + rotationVal + "', salaire='" + salaireVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(code_serviceText.getText()) && "".equals(rotationText.getText()) && !"".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String code_serviceVal=code_serviceText.getText();
+                        float salaireVal=Float.parseFloat(salaireText.getText());
+                        maconnexion.executeUpdate("UPDATE infirmier SET code_service='" + code_serviceVal + "', salaire= '" + salaireVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(code_serviceText.getText()) && !"".equals(rotationText.getText()) && !"".equals(salaireText.getText()))
+                {
+                    try
+                    {
+                        String code_serviceVal=code_serviceText.getText();
+                        String rotationVal=rotationText.getText();
+                        float salaireVal=Float.parseFloat(salaireText.getText());
+                        maconnexion.executeUpdate("UPDATE infirmier SET code_service='" + code_serviceVal + "', rotation='" + rotationVal + "', salaire= '" + salaireVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
+            }
+            //MALADE
+            if("malade".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    String nomVal=nomText.getText();
+                    String prenomVal=prenomText.getText();
+                    String adresseVal=adresseText.getText();
+                    String telVal=telText.getText();
+                    String mutuelleVal=mutuelleText.getText();
+                    maconnexion.executeUpdate("INSERT INTO malade(numero, nom, prenom, adresse, tel, mutuelle) VALUES('" + numeroVal + "', '" + nomVal + "', '" + prenomVal + "', '" + adresseVal + "', '" + telVal + "', '" + mutuelleVal + "');");
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if("malade".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    int numeroVal=Integer.parseInt(numeroText.getText());
+                    maconnexion.executeUpdate("DELETE from malade WHERE numero= '" + numeroVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if("malade".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                int numeroVal=Integer.parseInt(numeroText.getText());
+              
+                if(!"".equals(adresseText.getText()) && "".equals(telText.getText()) && "".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET adresse= '" + adresseVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(adresseText.getText()) && !"".equals(telText.getText()) && "".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String telVal=telText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET tel= '" + telVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(adresseText.getText()) && "".equals(telText.getText()) && !"".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String mutuelleVal=mutuelleText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET mutuelle= '" + mutuelleVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(adresseText.getText()) && !"".equals(telText.getText()) && "".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        String telVal=telText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET adresse= '" + adresseVal + "', tel='" + telVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(adresseText.getText()) && !"".equals(telText.getText()) && !"".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String telVal=telText.getText();
+                        String mutuelleVal=mutuelleText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET tel= '" + telVal + "', mutuelle='" + mutuelleVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(adresseText.getText()) && "".equals(telText.getText()) && !"".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        String mutuelleVal=mutuelleText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET adresse= '" + adresseVal + "', mutuelle= '" + mutuelleVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(adresseText.getText()) && !"".equals(telText.getText()) && !"".equals(mutuelleText.getText()))
+                {
+                    try
+                    {
+                        String adresseVal=adresseText.getText();
+                        String telVal=telText.getText();
+                        String mutuelleVal=mutuelleText.getText();
+                        maconnexion.executeUpdate("UPDATE malade SET adresse= '" + adresseVal + "', tel='" + telVal + "', mutuelle= '" + mutuelleVal + "' WHERE numero= '" + numeroVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                maj.setSelected(false);
+            }
+            //SERVICE
+            if("service".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
+            {
+                try
+                {
+                    String codeVal=codeText.getText();
+                    String nomVal=nomText.getText();
+                    String batimentVal=batimentText.getText();
+                    int directeurVal=Integer.parseInt(directeurText.getText());
+                    maconnexion.executeUpdate("INSERT INTO service(code, nom, batiment, directeur) VALUES('" + codeVal + "', '" + nomVal + "', '" + batimentVal + "', '" + directeurVal + "');");
+                    fenetreRes.setText("");
+                    fenetreRes.append("insertion reussie");
+                } 
+                catch (SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme insertion");
+                }
+                insertion.setSelected(false);
+            }
+            if("service".equals(listeDeTables.getSelectedItem()) && suppression.isSelected() && !(insertion.isSelected()) && !(maj.isSelected()))
+            {
+                String codeVal=codeText.getText();
+                try
+                {
+                    maconnexion.executeUpdate("DELETE from service WHERE code= '" + codeVal + "';");
+                    fenetreRes.setText("");
+                    fenetreRes.append("suppression reussie");
+                }
+                catch(SQLException ex) 
+                {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                    fenetreRes.setText("");
+                    fenetreRes.append("probleme suppression");
+                }
+                suppression.setSelected(false);
+            }
+            if("service".equals(listeDeTables.getSelectedItem()) && maj.isSelected() && !(insertion.isSelected()) && !(suppression.isSelected()))
+            {
+                String codeVal=codeText.getText();
+              
+                if(!"".equals(batimentText.getText()) && "".equals(directeurText.getText()))
+                {
+                    try
+                    {
+                        String batimentVal=batimentText.getText();
+                        maconnexion.executeUpdate("UPDATE service SET batiment= '" + batimentVal + "' WHERE code= '" + codeVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");                   
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if("".equals(batimentText.getText()) && !"".equals(directeurText.getText()))
+                {
+                    try
+                    {
+                        int directeurVal=Integer.parseInt(directeurText.getText());
+                        maconnexion.executeUpdate("UPDATE service SET directeur= '" + directeurVal + "' WHERE code= '" + codeVal + "';");
+                        fenetreRes.setText("");
+                        fenetreRes.append("modification reussie");
+                    }
+                    catch(SQLException ex) 
+                    {
+                        Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                        fenetreRes.setText("");
+                        fenetreRes.append("probleme modification");
+                    }
+                }
+                if(!"".equals(batimentText.getText()) && !"".equals(directeurText.getText()))
+                {
+                    try
+                    {
+                        String batimentVal=batimentText.getText();
+                        int directeurVal=Integer.parseInt(directeurText.getText());
+                        maconnexion.executeUpdate("UPDATE service SET batiment= '" + batimentVal + "', directeur='" + directeurVal + "' WHERE code= '" + codeVal + "';");
                         fenetreRes.setText("");
                         fenetreRes.append("modification reussie");
                     }
@@ -820,9 +1425,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(tel);
                 pChgt.add(telText);
                 pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le nom, le prenom "
-                        + "et le tel\nMise a jour: renseignez le nom, le prenom et le tel "
-                        + "puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le numero de l'employe\n"
+                        + "Mise a jour: renseignez le numero de l'employe, puis vous pouvez entrer une nouvelle adresse et/ou un nouveau numero de tel");
             }
             if("hospitalisation".equals(nomTable))
             {
@@ -838,8 +1442,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(lit);
                 pChgt.add(litText);
                 pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le no_malade\n"
-                        + "Mise a jour: renseignez le no_malade puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                fenetreRes.append("Insertion:renseignez tous les champs (numero de malade existant mais non hospitalise)\nSuppression: renseignez le no_malade\n"
+                        + "Mise a jour: renseignez le numero du malade puis 3 POSSIBILITES\n1) entrez uniquement un nouveau lit "
+                        + "2) entrez une nouvelle chambre ansi qu'un nouveau lit "
+                        + "3) entrez un nouveau code_service, une nouvelle chambre et un nouveau lit");
             }
             if("infirmier".equals(nomTable))
             {
@@ -855,8 +1461,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(salaire);
                 pChgt.add(salaireText);
                 pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le numero\n"
-                        + "Mise a jour: renseignez le numero puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                fenetreRes.append("Insertion:renseignez tous les champs (numero d'infirmier correspondant a un employe existant)\nSuppression: renseignez le numero\n"
+                        + "Mise a jour: renseignez le numero puis faites la (les) modification(s) souhaitee(s)");
             }
             if("malade".equals(nomTable))
             {
@@ -876,9 +1482,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(mutuelle);
                 pChgt.add(mutuelleText);
                 pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le nom, le prenom "
-                        + "et le tel\nMise a jour: renseignez le nom, le prenom et le tel "
-                        + "puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le numero du malade\n"
+                        + "Mise a jour: renseignez le numero du malade puis entrez une nouvelle adresse et/ou un nouveau tel et/ou une nouvelle mutuelle");
             }
             if("service".equals(nomTable))
             {
@@ -895,7 +1500,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(directeurText);
                 pChgt.setVisible(true);                
                 fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le code\n"
-                        + "Mise a jour: renseignez le code puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                        + "Mise a jour: renseignez le code puis rentrez un nouveau batiment et/ou un nouveau directeur");
             }
             if("soigne".equals(nomTable))
             {
@@ -907,8 +1512,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 pChgt.add(no_malade);
                 pChgt.add(no_maladeText);
                 pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le code\n"
-                        + "Mise a jour: renseignez le code puis faites la (les) modification(s) souhaitee(s)"); //Y REFLECHIR
+                fenetreRes.append("Insertion:renseignez le code, le batiment et le directeur\nSuppression: renseignez le code\n"
+                        + "Mise a jour: renseignez le code puis entrez un nouveau batiment et/ou un nouveau directeur"); 
             }
         }
     }
