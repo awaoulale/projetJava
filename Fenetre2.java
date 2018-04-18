@@ -30,21 +30,40 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
      */
 
     public Connexion maconnexion;
-    private final JLabel tab, req, res, lignes;
+    //private final JLabel tab, req, res, lignes;
     public JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, requeteLabel;
     public JTextField nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte;
     public JPasswordField passwdECETexte, passwdBDDTexte;
     public JButton connect, exec, local;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p0, p1, nord, p2, p3;
+    private final JPanel p0, p1, nord, p2, p3, p4, p5;
     
     //pour rechercher par chambre
     private final JTextField chambre; 
     private final JButton rechercheChambre;
     private final JRadioButton malades;
     private final JRadioButton batiments;
+    private final JRadioButton litChambre;
+    private final JRadioButton defautChambre;
+    
+    //pour rechercher par docteur
+    private final JTextField docteur; 
+    private final JButton rechercheDocteur;
+    private final JRadioButton soigneDocteur;
+    private final JRadioButton speDocteur;
+    private final JRadioButton defautDocteur;
+    private final JRadioButton salaireDocteur;
 
+    //Pour rechercher par employe 
+    private final JTextField employe;
+    private final JButton rechercheEmploye;
+    private final JRadioButton defautEmploye;
+    private final JRadioButton salaireEmploye;
+    private final JRadioButton fonctionEmploye;
+    private final JRadioButton serviceEmploye;
+
+    
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
      */
@@ -83,17 +102,47 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         rechercheChambre = new JButton("Recherche le num de la chambre");
         malades = new JRadioButton("par malades");
         batiments = new JRadioButton("par batiments");
+        litChambre = new JRadioButton("par nombre de lit");
+        defautChambre=new JRadioButton("par défaut",true);
         ButtonGroup bgChambre = new ButtonGroup(); //pour selectioner 1 seul RadioButton à la fois
         bgChambre.add(malades);
         bgChambre.add(batiments);
+        bgChambre.add(litChambre);
+        bgChambre.add(defautChambre);
 
+
+        //Pour rechercher par docteur
+        rechercheDocteur = new JButton("Recherche le nom du docteur");
+        docteur=new JTextField(); 
+        soigneDocteur=new JRadioButton("par soigné");
+        speDocteur=new JRadioButton("par spécialité");
+        salaireDocteur=new JRadioButton("par salaire");
+        defautDocteur=new JRadioButton("par défaut",true);
+        ButtonGroup bgDocteur = new ButtonGroup();
+        bgDocteur.add(soigneDocteur);
+        bgDocteur.add(speDocteur);
+        bgDocteur.add(defautDocteur);
         
+        //Pour rechercher par employe
+        employe=new JTextField();
+        rechercheEmploye=new JButton("Recherche le nom de l'employe");
+        defautEmploye=new JRadioButton("par défaut", true);
+        salaireEmploye=new JRadioButton("par salaire");
+        fonctionEmploye=new JRadioButton("par fonction");
+        serviceEmploye=new JRadioButton("par service");
+        ButtonGroup bgEmploye = new ButtonGroup();
+        bgEmploye.add(defautEmploye);
+        bgEmploye.add(salaireEmploye);
+        bgEmploye.add(fonctionEmploye);
+        bgEmploye.add(serviceEmploye);
+
+
 
         // creation des labels
-        tab = new JLabel("Tables", JLabel.CENTER);
-        lignes = new JLabel("Lignes", JLabel.CENTER);
-        req = new JLabel("Requetes de sélection", JLabel.CENTER);
-        res = new JLabel("Résultats requête", JLabel.CENTER);
+        //tab = new JLabel("Tables", JLabel.CENTER);
+        //lignes = new JLabel("Lignes", JLabel.CENTER);
+        //req = new JLabel("Requetes de sélection", JLabel.CENTER);
+        //res = new JLabel("Résultats requête", JLabel.CENTER);
         nameECE = new JLabel("login ECE :", JLabel.CENTER);
         passwdECE = new JLabel("password ECE :", JLabel.CENTER);
         loginBDD = new JLabel("login base :", JLabel.CENTER);
@@ -107,13 +156,18 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         nord = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
+        p4 = new JPanel();
+        p5 = new JPanel();
 
         // mise en page des panneaux
-        p0.setLayout(new GridLayout(1, 11));
-        p1.setLayout(new GridLayout(1, 4));
-        nord.setLayout(new GridLayout(2, 1));
-        p2.setLayout(new GridLayout(1, 4));
+        p0.setLayout(new GridLayout(1, 12)); //Pour la connexion
+        p1.setLayout(new GridLayout(1, 6));//Pour la chambre
+        nord.setLayout(new GridLayout(1, 1));
+        p2.setLayout(new GridLayout(1, 1));//Pour les résultats
         p3.setLayout(new GridLayout(1, 3));
+        p4.setLayout(new GridLayout(1,6));//Pour le docteur
+        p5.setLayout(new GridLayout(1,6));//Pour l'employe
+
 
         // ajout des objets graphqiues dans les panneaux
         p0.add(nameECE);
@@ -128,25 +182,62 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p0.add(nameBDD);
         p0.add(nameBDDTexte);
         p0.add(local);
-        p1.add(tab);
-        p1.add(lignes);
-        p1.add(req);
-        p1.add(res);
+        //p1.add(tab);
+        //p1.add(lignes);
+        //p1.add(req);
+        //p1.add(res);
         nord.add("North", p0);
-        nord.add("North", p1);
-        p2.add(listeDeTables);
-        p2.add(fenetreLignes);
-        p2.add(listeDeRequetes);
-        p2.add(fenetreRes);
-        p3.add(requeteLabel);
-        p3.add(requeteTexte);
-        p3.add(exec);
+        //nord.add(p1);
         
-        //Pour rechercher la chambre
+        //p2.add(listeDeTables);
+        //p2.add(fenetreLignes);
+        //p2.add(listeDeRequetes);
+        //Essai pour position le bouton et les RadioButton pour la recherche par chambre
+        p1.setLayout(new BoxLayout(p1,BoxLayout.PAGE_AXIS));
+        chambre.setPreferredSize(new Dimension(20,20));
         p1.add(chambre); //mal placé
         p1.add(rechercheChambre);
         p1.add(malades);
         p1.add(batiments);
+        p1.add(litChambre);
+        p1.add(defautChambre);
+
+                
+        //Pour recherche par docteur
+        p4.setLayout(new BoxLayout(p4,BoxLayout.PAGE_AXIS));
+        p4.add(docteur);
+        p4.add(rechercheDocteur);
+        p4.add(soigneDocteur);
+        p4.add(speDocteur);
+        p4.add(salaireDocteur);
+        p4.add(defautDocteur);
+        
+        //Pour rechercher par employe
+         p5.setLayout(new BoxLayout(p5,BoxLayout.PAGE_AXIS));
+         p5.add(employe);
+         p5.add(rechercheEmploye);
+         p5.add(fonctionEmploye);
+         p5.add(serviceEmploye);
+         p5.add(salaireEmploye);
+         p5.add(defautEmploye);
+
+        
+        p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
+        p3.add(p1);
+        p3.add(p4);
+        p3.add(p5);
+              
+        p2.add(fenetreRes);
+        
+        //p3.add(requeteLabel);
+        //p3.add(requeteTexte);
+        //p3.add(exec);
+        
+        //Pour rechercher la chambre
+        /*p1.add(chambre); //mal placé
+        p1.add(rechercheChambre);
+        p1.add(malades);*/
+        
 
         // ajout des listeners
         connect.addActionListener(this);
@@ -163,12 +254,29 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         rechercheChambre.addActionListener(this);
         malades.addActionListener(this);
         batiments.addActionListener(this);
+        litChambre.addActionListener(this);
+        defautChambre.addActionListener(this);
 
+        //Pour rechercher par docteur 
+        docteur.addActionListener(this); 
+        rechercheDocteur.addActionListener(this);
+        soigneDocteur.addActionListener(this);
+        speDocteur.addActionListener(this);
+        defautDocteur.addActionListener(this);
+        salaireDocteur.addActionListener(this);
+        
+        //Pour rechercher par employe
+        employe.addActionListener(this); 
+        rechercheEmploye.addActionListener(this); 
+        defautEmploye.addActionListener(this); 
+        salaireEmploye.addActionListener(this); 
+        fonctionEmploye.addActionListener(this); 
+        serviceEmploye.addActionListener(this); 
         // couleurs des objets graphiques
-        tab.setBackground(Color.MAGENTA);
-        lignes.setBackground(Color.MAGENTA);
-        req.setBackground(Color.MAGENTA);
-        res.setBackground(Color.MAGENTA);
+        //tab.setBackground(Color.MAGENTA);
+        //lignes.setBackground(Color.MAGENTA);
+        //req.setBackground(Color.MAGENTA);
+        //res.setBackground(Color.MAGENTA);
         listeDeTables.setBackground(Color.CYAN);
         fenetreLignes.setBackground(Color.WHITE);
         listeDeRequetes.setBackground(Color.GREEN);
@@ -177,8 +285,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
 
         // disposition geographique des panneaux
         add("North", nord);
-        add("Center", p2);
-        add("South", p3);
+        add("Center",p2);
+        add("South",p3);
 
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
@@ -447,39 +555,82 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         else if (source==rechercheChambre)
         {
             int numChambre = Integer.parseInt(chambre.getText()); //le numéro de chambre que l'utilisateur entre converti en int
-            String requeteSelectionnee;
+            String requeteSelectionnee = null;
             if (malades.isSelected())
-            {
-                requeteSelectionnee = "SELECT hospitalisation.no_chambre,malade.nom,malade.prenom "
-                                      + "FROM malade JOIN hospitalisation ON malade.numero=hospitalisation.no_malade "
-                                      + "WHERE hospitalisation.no_chambre=" + numChambre + ";"; 
-                
-                                       
+            { //OK
+               
+                requeteSelectionnee = "SELECT hospitalisation.no_chambre,service.batiment,malade.nom,malade.prenom,service.code,service.nom"
+                                      + " FROM hospitalisation"
+                                      + " JOIN malade ON malade.numero=hospitalisation.no_malade"
+                                      + " JOIN service ON service.code=hospitalisation.code_service"
+                                      + " WHERE hospitalisation.no_chambre=" + numChambre + ";"; 
+                              
 
             }
-            else if (batiments.isSelected())
-            {
-                //requeteSelectionnee = "SELECT code_service FROM chambre WHERE no_chambre=" + numChambre + ";";
+            if (batiments.isSelected())
+            { //OK
+                
                 requeteSelectionnee = "SELECT chambre.no_chambre, service.batiment,service.code, service.nom"
                         + "            FROM service JOIN chambre ON service.code=chambre.code_service "
                         + "            WHERE chambre.no_chambre=" + numChambre + ";";
                         
             }
-            else
+            else if (defautChambre.isSelected())
             {
                 requeteSelectionnee = "SELECT * FROM chambre WHERE no_chambre=" + numChambre + ";";
                
             }
             
-            remplirRequetes();
-            afficherRequetes();
+           
+            //remplirRequetes();
+            //afficherRequetes();
             
             try {
+                
                 afficherRes(requeteSelectionnee);
+
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+
+        }
+        else if (source==rechercheDocteur)
+        {
+            String nomDoc = docteur.getText();
+            String requeteSelectionnee="e";
+            if (speDocteur.isSelected())
+            { //OK 
+                requeteSelectionnee = "SELECT docteur.specialite FROM docteur "
+                        + "JOIN employe ON employe.numero=docteur.numero "
+                        + "WHERE employe.nom LIKE '" + nomDoc + "%';";
+                
+
+            }
+            if (soigneDocteur.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT malade.nom, malade.prenom FROM soigne "
+                        + "JOIN malade ON soigne.no_malade=malade.numero "
+                        + "JOIN docteur ON soigne.no_docteur=docteur.numero "
+                        + "JOIN employe ON employe.numero=soigne.no_docteur "
+                        + "WHERE employe.nom LIKE '" + nomDoc + "%';";
+                
+            }
+            else if (defautDocteur.isSelected()) //SCROLLPANE
+            {//OK BOF
+                requeteSelectionnee = "SELECT * FROM docteur "
+                        + "INNER JOIN employe ON employe.numero=docteur.numero "
+                        + "WHERE employe.nom LIKE '" + nomDoc + "%';";
+            }
+            //remplirRequetes();
+            //afficherRequetes();
+            
+            try {
+                afficherRes(requeteSelectionnee);
+            } catch (SQLException ex) {
+                Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
 
         }
     }
