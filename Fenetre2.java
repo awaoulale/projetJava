@@ -37,7 +37,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     public JButton connect, exec, local;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p0, p1, nord, p2, p3, p4, p5;
+    private final JPanel p0, p1, nord, p2, p3, p4, p5, p6, p7, p8, p9,pA;
     
     //pour rechercher par chambre
     private final JTextField chambre; 
@@ -62,7 +62,31 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JRadioButton salaireEmploye;
     private final JRadioButton fonctionEmploye;
     private final JRadioButton serviceEmploye;
-
+    
+    //Pour rechercher par infirmier
+    private final JTextField infirmier;
+    private final JButton rechercheInfirmier;
+    private final JRadioButton defautInfirmier;
+    private final JRadioButton salaireInfirmier;
+    private final JRadioButton rotationInfirmier;
+    private final JRadioButton serviceInfirmier;
+    
+    //Pour rechercher par malade
+    private final JTextField malade;
+    private final JButton rechercheMalade;
+    private final JRadioButton defautMalade;
+    private final JRadioButton mutuelleMalade;
+    private final JRadioButton chambreMalade;
+    private final JRadioButton docteurMalade;
+    
+    //Pour rechercher par service
+    private final JTextField service;
+    private final JButton rechercheService;
+    private final JRadioButton defautService;
+    private final JRadioButton codeService;
+    private final JRadioButton batimentService;
+    private final JRadioButton employeService;
+    
     
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
@@ -135,7 +159,45 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         bgEmploye.add(salaireEmploye);
         bgEmploye.add(fonctionEmploye);
         bgEmploye.add(serviceEmploye);
-
+        
+        //Pour rechercher par infirmier
+        infirmier=new JTextField();
+        rechercheInfirmier=new JButton("Recherche le nom de l'infirmier");
+        defautInfirmier=new JRadioButton("par défaut", true);
+        salaireInfirmier=new JRadioButton("par salaire");
+        rotationInfirmier=new JRadioButton("par rotation");
+        serviceInfirmier=new JRadioButton("par service");
+        ButtonGroup bgInfirmier = new ButtonGroup(); 
+        bgInfirmier.add(defautInfirmier);
+        bgInfirmier.add(salaireInfirmier);
+        bgInfirmier.add(rotationInfirmier);
+        bgInfirmier.add(serviceInfirmier);
+    
+        //Pour rechercher par malade
+        malade=new JTextField();
+        rechercheMalade=new JButton("Recherche le nom du malade");
+        defautMalade=new JRadioButton("par défaut", true);
+        mutuelleMalade=new JRadioButton("par mutuelle");
+        chambreMalade=new JRadioButton("par chambre");
+        docteurMalade=new JRadioButton("par docteur");
+        ButtonGroup bgMalade = new ButtonGroup(); 
+        bgMalade.add(defautMalade);
+        bgMalade.add(mutuelleMalade);
+        bgMalade.add(chambreMalade);
+        bgMalade.add(docteurMalade);
+    
+        //Pour rechercher par service
+        service=new JTextField();
+        rechercheService=new JButton("Recherche le nom du service");
+        defautService=new JRadioButton("par défaut", true);
+        codeService=new JRadioButton("par code");
+        batimentService=new JRadioButton("par batiment");
+        employeService=new JRadioButton("par employe");
+        ButtonGroup bgService = new ButtonGroup(); 
+        bgService.add(defautService);
+        bgService.add(codeService);
+        bgService.add(batimentService);
+        bgService.add(employeService);
 
 
         // creation des labels
@@ -158,15 +220,26 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p3 = new JPanel();
         p4 = new JPanel();
         p5 = new JPanel();
+        p6 = new JPanel();
+        p7 = new JPanel();
+        p8 = new JPanel();
+        p9 = new JPanel();
+        pA = new JPanel();
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 12)); //Pour la connexion
         p1.setLayout(new GridLayout(1, 6));//Pour la chambre
         nord.setLayout(new GridLayout(1, 1));
         p2.setLayout(new GridLayout(1, 1));//Pour les résultats
-        p3.setLayout(new GridLayout(1, 3));
+        
+        p3.setLayout(new GridLayout(1,3)); //regroupe p1,p4,p5
         p4.setLayout(new GridLayout(1,6));//Pour le docteur
         p5.setLayout(new GridLayout(1,6));//Pour l'employe
+        
+        p6.setLayout(new GridLayout(1,6));//Pour l'infirmier
+        p7.setLayout(new GridLayout(1,6));//Pour le malade
+        p8.setLayout(new GridLayout(1,6));//Pour le service
+        p9.setLayout(new GridLayout(1,3));//regroupe p6,p7,p8
 
 
         // ajout des objets graphqiues dans les panneaux
@@ -229,6 +302,43 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
               
         p2.add(fenetreRes);
         
+         //Pour recherche par infirmier
+        p6.setLayout(new BoxLayout(p6,BoxLayout.PAGE_AXIS));
+        p6.add(infirmier);
+        p6.add(rechercheInfirmier);
+        p6.add(rotationInfirmier);
+        p6.add(serviceInfirmier);
+        p6.add(salaireInfirmier);
+        p6.add(defautInfirmier);
+        
+        //Pour recherche par malalde
+        p7.setLayout(new BoxLayout(p7,BoxLayout.PAGE_AXIS));
+        p7.add(malade);
+        p7.add(rechercheMalade);
+        p7.add(mutuelleMalade);
+        p7.add(chambreMalade);
+        p7.add(docteurMalade);
+        p7.add(defautMalade);
+        
+        //Pour recherche par service
+        p8.setLayout(new BoxLayout(p8,BoxLayout.PAGE_AXIS));
+        p8.add(service);
+        p8.add(rechercheService);
+        p8.add(codeService);
+        p8.add(batimentService);
+        p8.add(employeService);
+        p8.add(defautService);
+        
+        p9.setLayout(new BoxLayout(p9,BoxLayout.LINE_AXIS));
+        p9.add(p6);
+        p9.add(p7);
+        p9.add(p8);
+        
+        pA.setLayout(new BoxLayout(pA,BoxLayout.PAGE_AXIS));
+        pA.add(p3);
+        pA.add(p9);
+     
+        
         //p3.add(requeteLabel);
         //p3.add(requeteTexte);
         //p3.add(exec);
@@ -277,16 +387,45 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         //lignes.setBackground(Color.MAGENTA);
         //req.setBackground(Color.MAGENTA);
         //res.setBackground(Color.MAGENTA);
-        listeDeTables.setBackground(Color.CYAN);
-        fenetreLignes.setBackground(Color.WHITE);
-        listeDeRequetes.setBackground(Color.GREEN);
-        fenetreRes.setBackground(Color.WHITE);
-        p1.setBackground(Color.LIGHT_GRAY);
+        //listeDeTables.setBackground(Color.CYAN);
+        //fenetreLignes.setBackground(Color.WHITE);
+        //listeDeRequetes.setBackground(Color.GREEN);
+        fenetreRes.setBackground(Color.LIGHT_GRAY);
+        //p1.setBackground(Color.LIGHT_GRAY);
+        //p1.setBackground(Color.WHITE);
+        
+        //Pour rechercher par infirmier
+        infirmier.addActionListener(this); 
+        rechercheInfirmier.addActionListener(this); 
+        defautInfirmier.addActionListener(this); 
+        salaireInfirmier.addActionListener(this); 
+        rotationInfirmier.addActionListener(this); 
+        serviceInfirmier.addActionListener(this); 
+
+    
+        //Pour rechercher par malade
+        malade.addActionListener(this); 
+        rechercheMalade.addActionListener(this); 
+        defautMalade.addActionListener(this); 
+        mutuelleMalade.addActionListener(this); 
+        chambreMalade.addActionListener(this); 
+        docteurMalade.addActionListener(this); 
+
+    
+        //Pour rechercher par service
+        service.addActionListener(this); 
+        rechercheService.addActionListener(this); 
+        defautService.addActionListener(this); 
+        codeService.addActionListener(this); 
+        batimentService.addActionListener(this); 
+        employeService.addActionListener(this); 
+     
 
         // disposition geographique des panneaux
         add("North", nord);
         add("Center",p2);
-        add("South",p3);
+        add("South",pA);
+        
 
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
@@ -573,6 +712,27 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 requeteSelectionnee = "SELECT chambre.no_chambre, service.batiment,service.code, service.nom"
                         + "            FROM service JOIN chambre ON service.code=chambre.code_service "
                         + "            WHERE chambre.no_chambre=" + numChambre + ";";
+                
+                //CREATION DU TABLEAU
+                /*try {
+                    Object[][] data = new Object[afficherRes(requeteSelectionnee).size()/2][10];
+                    //AJOUT
+                    int i = 0;
+                    while (i < afficherRes(requeteSelectionnee).size()){
+                    data[i][0] = afficherRes(requeteSelectionnee).get(i);
+                    data[i][1] = afficherRes(requeteSelectionnee).get(i+1);
+                    i=i+2;
+ 
+        } 
+                    //FIN AJOUT
+                    String[] title = {"num chambre","service","code","nom"};
+                    JTable tableau = new JTable(data,title);
+
+                    this.getContentPane().add(new JScrollPane(tableau));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
+                //FIN CREATION DU TABLEAU
                         
             }
             else if (defautChambre.isSelected())
@@ -585,6 +745,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             //remplirRequetes();
             //afficherRequetes();
             
+            //PERMET D AFFICHER LES RESULTATS
             try {
                 
                 afficherRes(requeteSelectionnee);
@@ -592,7 +753,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            //FIN DU PERMET D AFFICHER LES RESULTATS 
 
         }
         else if (source==rechercheDocteur)
