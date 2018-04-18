@@ -39,7 +39,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JTextArea fenetreLignes, fenetreRes;
     private final JPanel p0, p1, nord, p2, p3, p4, p5, p6, p7, p8, p9,pA;
     
-    //pour rechercher par chambre
+    //pour rechercher par chambre //OK
     private final JTextField chambre; 
     private final JButton rechercheChambre;
     private final JRadioButton malades;
@@ -47,23 +47,23 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JRadioButton litChambre;
     private final JRadioButton defautChambre;
     
-    //pour rechercher par docteur
+    //pour rechercher par docteur 
     private final JTextField docteur; 
     private final JButton rechercheDocteur;
     private final JRadioButton soigneDocteur;
     private final JRadioButton speDocteur;
     private final JRadioButton defautDocteur;
-    private final JRadioButton salaireDocteur;
+    private final JRadioButton directeurDocteur; //PAS OK
 
-    //Pour rechercher par employe 
+    //Pour rechercher par employe //PAS OK
     private final JTextField employe;
     private final JButton rechercheEmploye;
     private final JRadioButton defautEmploye;
-    private final JRadioButton salaireEmploye;
+    private final JRadioButton directeurEmploye;
     private final JRadioButton fonctionEmploye;
     private final JRadioButton serviceEmploye;
     
-    //Pour rechercher par infirmier
+    //Pour rechercher par infirmier //OK
     private final JTextField infirmier;
     private final JButton rechercheInfirmier;
     private final JRadioButton defautInfirmier;
@@ -77,15 +77,15 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JRadioButton defautMalade;
     private final JRadioButton mutuelleMalade;
     private final JRadioButton chambreMalade;
-    private final JRadioButton docteurMalade;
+    private final JRadioButton docteurMalade; //PAS OK 
     
     //Pour rechercher par service
     private final JTextField service;
     private final JButton rechercheService;
     private final JRadioButton defautService;
-    private final JRadioButton codeService;
+    private final JRadioButton nomService;
     private final JRadioButton batimentService;
-    private final JRadioButton employeService;
+    private final JRadioButton employeService; //PAS OK
     
     
     /**
@@ -127,7 +127,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         malades = new JRadioButton("par malades");
         batiments = new JRadioButton("par batiments");
         litChambre = new JRadioButton("par nombre de lit");
-        defautChambre=new JRadioButton("par défaut",true);
+        defautChambre=new JRadioButton("par défaut");
+        defautChambre.setSelected(true);
         ButtonGroup bgChambre = new ButtonGroup(); //pour selectioner 1 seul RadioButton à la fois
         bgChambre.add(malades);
         bgChambre.add(batiments);
@@ -140,30 +141,34 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         docteur=new JTextField(); 
         soigneDocteur=new JRadioButton("par soigné");
         speDocteur=new JRadioButton("par spécialité");
-        salaireDocteur=new JRadioButton("par salaire");
-        defautDocteur=new JRadioButton("par défaut",true);
+        directeurDocteur=new JRadioButton("par directeur");
+        defautDocteur=new JRadioButton("par défaut");
+        defautDocteur.setSelected(true);
         ButtonGroup bgDocteur = new ButtonGroup();
         bgDocteur.add(soigneDocteur);
         bgDocteur.add(speDocteur);
         bgDocteur.add(defautDocteur);
+        bgDocteur.add(directeurDocteur);
         
         //Pour rechercher par employe
         employe=new JTextField();
         rechercheEmploye=new JButton("Recherche le nom de l'employe");
-        defautEmploye=new JRadioButton("par défaut", true);
-        salaireEmploye=new JRadioButton("par salaire");
+        defautEmploye=new JRadioButton("par défaut");
+        defautEmploye.setSelected(true);
+        directeurEmploye=new JRadioButton("par directeur");
         fonctionEmploye=new JRadioButton("par fonction");
         serviceEmploye=new JRadioButton("par service");
         ButtonGroup bgEmploye = new ButtonGroup();
         bgEmploye.add(defautEmploye);
-        bgEmploye.add(salaireEmploye);
+        bgEmploye.add(directeurEmploye);
         bgEmploye.add(fonctionEmploye);
         bgEmploye.add(serviceEmploye);
         
         //Pour rechercher par infirmier
         infirmier=new JTextField();
         rechercheInfirmier=new JButton("Recherche le nom de l'infirmier");
-        defautInfirmier=new JRadioButton("par défaut", true);
+        defautInfirmier=new JRadioButton("par défaut");
+        defautInfirmier.setSelected(true);
         salaireInfirmier=new JRadioButton("par salaire");
         rotationInfirmier=new JRadioButton("par rotation");
         serviceInfirmier=new JRadioButton("par service");
@@ -176,7 +181,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         //Pour rechercher par malade
         malade=new JTextField();
         rechercheMalade=new JButton("Recherche le nom du malade");
-        defautMalade=new JRadioButton("par défaut", true);
+        defautMalade=new JRadioButton("par défaut");
+        defautMalade.setSelected(true);
         mutuelleMalade=new JRadioButton("par mutuelle");
         chambreMalade=new JRadioButton("par chambre");
         docteurMalade=new JRadioButton("par docteur");
@@ -189,13 +195,14 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         //Pour rechercher par service
         service=new JTextField();
         rechercheService=new JButton("Recherche le nom du service");
-        defautService=new JRadioButton("par défaut", true);
-        codeService=new JRadioButton("par code");
+        defautService=new JRadioButton("par défaut");
+        defautService.setSelected(true);
+        nomService=new JRadioButton("par nom");
         batimentService=new JRadioButton("par batiment");
         employeService=new JRadioButton("par employe");
         ButtonGroup bgService = new ButtonGroup(); 
         bgService.add(defautService);
-        bgService.add(codeService);
+        bgService.add(nomService);
         bgService.add(batimentService);
         bgService.add(employeService);
 
@@ -282,7 +289,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p4.add(rechercheDocteur);
         p4.add(soigneDocteur);
         p4.add(speDocteur);
-        p4.add(salaireDocteur);
+        p4.add(directeurDocteur);
         p4.add(defautDocteur);
         
         //Pour rechercher par employe
@@ -291,7 +298,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
          p5.add(rechercheEmploye);
          p5.add(fonctionEmploye);
          p5.add(serviceEmploye);
-         p5.add(salaireEmploye);
+         p5.add(directeurEmploye);
          p5.add(defautEmploye);
 
         
@@ -324,7 +331,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p8.setLayout(new BoxLayout(p8,BoxLayout.PAGE_AXIS));
         p8.add(service);
         p8.add(rechercheService);
-        p8.add(codeService);
+        p8.add(nomService);
         p8.add(batimentService);
         p8.add(employeService);
         p8.add(defautService);
@@ -373,13 +380,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         soigneDocteur.addActionListener(this);
         speDocteur.addActionListener(this);
         defautDocteur.addActionListener(this);
-        salaireDocteur.addActionListener(this);
+        directeurDocteur.addActionListener(this);
         
         //Pour rechercher par employe
         employe.addActionListener(this); 
         rechercheEmploye.addActionListener(this); 
         defautEmploye.addActionListener(this); 
-        salaireEmploye.addActionListener(this); 
+        directeurEmploye.addActionListener(this); 
         fonctionEmploye.addActionListener(this); 
         serviceEmploye.addActionListener(this); 
         // couleurs des objets graphiques
@@ -416,7 +423,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         service.addActionListener(this); 
         rechercheService.addActionListener(this); 
         defautService.addActionListener(this); 
-        codeService.addActionListener(this); 
+        nomService.addActionListener(this); 
         batimentService.addActionListener(this); 
         employeService.addActionListener(this); 
      
@@ -565,6 +572,30 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         }
         return liste;
     }
+    
+     public ArrayList<String> afficherRes2(String requeteSelectionnee) throws SQLException {
+        ArrayList <String> liste = null;
+        try {
+
+            // effacer les résultats
+            fenetreRes.removeAll();
+
+            // recupérér les résultats de la requete selectionnee
+            liste = maconnexion.remplirChampsRequete2(requeteSelectionnee);
+
+            // afficher les lignes de la requete selectionnee a partir de la liste
+            fenetreRes.setText("");
+            for (String liste1 : liste) {
+                fenetreRes.append(liste1);
+            }
+        } catch (SQLException e) {
+            // afficher l'erreur dans les résultats
+            fenetreRes.setText("");
+            fenetreRes.append("Echec requete SQL");
+        }
+        return liste;
+         
+     }
 
     /**
      *
@@ -715,15 +746,20 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 
                 //CREATION DU TABLEAU
                 /*try {
-                    Object[][] data = new Object[afficherRes(requeteSelectionnee).size()/2][10];
+                    Object[][] data = new Object[2][4];
                     //AJOUT
                     int i = 0;
-                    while (i < afficherRes(requeteSelectionnee).size()){
-                    data[i][0] = afficherRes(requeteSelectionnee).get(i);
-                    data[i][1] = afficherRes(requeteSelectionnee).get(i+1);
-                    i=i+2;
+                    //while (i < ()){
+                    data[0][0] = afficherRes2(requeteSelectionnee).get(0);
+                    data[0][1] = afficherRes2(requeteSelectionnee).get(1);
+                    data[0][2] = afficherRes2(requeteSelectionnee).get(2);
+                    data[0][3] = afficherRes2(requeteSelectionnee).get(3);
+                    data[1][0] = afficherRes2(requeteSelectionnee).get(4);
+                    data[1][1] = afficherRes2(requeteSelectionnee).get(5);
+                    data[1][2] = afficherRes2(requeteSelectionnee).get(6);
+                    data[1][3] = afficherRes2(requeteSelectionnee).get(7);
  
-        } 
+                    //} 
                     //FIN AJOUT
                     String[] title = {"num chambre","service","code","nom"};
                     JTable tableau = new JTable(data,title);
@@ -734,6 +770,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 }*/
                 //FIN CREATION DU TABLEAU
                         
+            }
+            if (litChambre.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT chambre.nb_lits,chambre.code_service FROM chambre"
+                        + " JOIN service ON chambre.code_service=service.code"
+                        + " WHERE no_chambre=" + numChambre + ";";
+               
             }
             else if (defautChambre.isSelected())
             {
@@ -759,7 +802,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         else if (source==rechercheDocteur)
         {
             String nomDoc = docteur.getText();
-            String requeteSelectionnee="e";
+            String requeteSelectionnee = null;
             if (speDocteur.isSelected())
             { //OK 
                 requeteSelectionnee = "SELECT docteur.specialite FROM docteur "
@@ -774,6 +817,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + "JOIN malade ON soigne.no_malade=malade.numero "
                         + "JOIN docteur ON soigne.no_docteur=docteur.numero "
                         + "JOIN employe ON employe.numero=soigne.no_docteur "
+                        + "WHERE employe.nom LIKE '" + nomDoc + "%';";
+                
+            }
+            if (directeurDocteur.isSelected())
+            {//PAS OK 
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
+                        + "JOIN service ON employe.numero=service.directeur "
                         + "WHERE employe.nom LIKE '" + nomDoc + "%';";
                 
             }
@@ -793,6 +843,146 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             }
 
 
+        }
+        else if (source==rechercheEmploye)
+        {
+            String nomEmploye = employe.getText();
+            String requeteSelectionnee=null;
+            
+
+            if (directeurEmploye.isSelected())
+            {//PAS OK
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
+                        + "JOIN service ON employe.numero=service.directeur "
+                        + "WHERE employe.nom LIKE '" + nomEmploye + "%';";
+                        
+                
+            }
+            if (fonctionEmploye.isSelected())
+            {//PAS OK
+                
+            }
+            if (serviceEmploye.isSelected())
+            {//PAS OK 
+                
+            }
+            else if (defautEmploye.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom,employe.adresse,employe.tel FROM employe"
+                       + " WHERE employe.nom LIKE '" + nomEmploye + "%';";
+            }
+            try {
+                
+                afficherRes(requeteSelectionnee);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                    
+        }
+        else if (source==rechercheInfirmier)
+        {//OK
+            String nomInfirmier = infirmier.getText();
+            String requeteSelectionnee=null;
+            if (salaireInfirmier.isSelected())
+            {//OK 
+                requeteSelectionnee = "SELECT infirmier.salaire FROM infirmier"
+                        + " JOIN employe ON employe.numero=infirmier.numero"
+                        + " WHERE employe.nom LIKE '" + nomInfirmier + "%';"; 
+            }
+            if (rotationInfirmier.isSelected())
+            {//OK                
+                 requeteSelectionnee = "SELECT infirmier.rotation FROM infirmier"
+                        + " JOIN employe ON employe.numero=infirmier.numero"
+                        + " WHERE employe.nom LIKE '" + nomInfirmier + "%';";
+            }
+            if (serviceInfirmier.isSelected())
+            {//OK 
+                requeteSelectionnee = "SELECT infirmier.code_service FROM infirmier"
+                        + " JOIN employe ON employe.numero=infirmier.numero"
+                        + " WHERE employe.nom LIKE '" + nomInfirmier + "%';";
+            }
+            else if (defautInfirmier.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom,employe.adresse,employe.tel FROM infirmier"
+                        + " JOIN employe ON employe.numero=infirmier.numero"
+                        + " WHERE employe.nom LIKE '" + nomInfirmier + "%';";
+            }
+            try {
+                
+                afficherRes(requeteSelectionnee);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (source==rechercheMalade)
+        {
+            String nomMalade = malade.getText();
+            String requeteSelectionnee=null;
+            if (mutuelleMalade.isSelected())
+            {
+                requeteSelectionnee = "SELECT malade.mutuelle FROM malade"
+                        + " WHERE malade.nom LIKE '" + nomMalade+ "%';";
+            }
+            if (chambreMalade.isSelected())
+            {//OK                
+                 requeteSelectionnee = "SELECT hospitalisation.no_chambre,hospitalisation.code_service,service.batiment,service.nom FROM hospitalisation"
+                         + " JOIN malade ON malade.numero=hospitalisation.no_malade"
+                         + " JOIN service ON hospitalisation.code_service=service.code"
+                          + " WHERE malade.nom LIKE '" + nomMalade+ "%';";
+            }
+            if (docteurMalade.isSelected())
+            {//PAS OK 
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe"
+                        + " JOIN docteur ON docteur.numero=employe.numero"
+                        + " WHERE malade.nom LIKE '" + nomMalade+ "%';";
+            }
+            else if (defautMalade.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT malade.nom,malade.prenom,malade.adresse,malade.tel,malade.mutuelle FROM malade"
+                        + " WHERE malade.nom LIKE '" + nomMalade + "%';";
+            }
+            
+            try {
+                
+                afficherRes(requeteSelectionnee);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (source==rechercheService)
+        {//OK
+
+            String codeService = service.getText();
+            String requeteSelectionnee=null;
+            if (nomService.isSelected())
+            {//OK 
+                requeteSelectionnee = "SELECT service.nom FROM service"
+                         + " WHERE service.code LIKE '" + codeService + "%';"; 
+            }
+            if (batimentService.isSelected())
+            {//OK                
+                 requeteSelectionnee = "SELECT service.batiment FROM service"
+                         + " WHERE service.code LIKE '" + codeService + "%';"; 
+            }
+            if (employeService.isSelected())
+            {//PAS OK 
+                requeteSelectionnee = "SELECT ";
+            }
+            else if (defautService.isSelected())
+            {//OK
+                requeteSelectionnee = "SELECT service.nom,service.batiment FROM service"
+                         + " WHERE service.code LIKE '" + codeService + "%';"; 
+            }
+            try {
+                
+                afficherRes(requeteSelectionnee);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
