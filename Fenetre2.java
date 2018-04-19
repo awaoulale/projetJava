@@ -30,11 +30,6 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
      */
 
     public Connexion maconnexion;
-    //private final JLabel tab, req, res, lignes;
-    public JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD, requeteLabel;
-    public JTextField nameECETexte, loginBDDTexte, requeteTexte, nameBDDTexte;
-    public JPasswordField passwdECETexte, passwdBDDTexte;
-    public JButton connect, exec, local;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
     private final JPanel p0, p1, nord, p2, p3, p4, p5, p6, p7, p8, p9,pA;
@@ -47,37 +42,38 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JRadioButton litChambre;
     private final JRadioButton defautChambre;
     
-    //pour rechercher par docteur 
+    //pour rechercher par docteur //OK
     private final JTextField docteur; 
     private final JButton rechercheDocteur;
     private final JRadioButton soigneDocteur;
     private final JRadioButton speDocteur;
     private final JRadioButton defautDocteur;
-    private final JRadioButton directeurDocteur; //PAS OK
+    private final JRadioButton directeurDocteur; 
 
-    //Pour rechercher par employe //PAS OK
+    //Pour rechercher par employe // OK
     private final JTextField employe;
     private final JButton rechercheEmploye;
     private final JRadioButton defautEmploye;
-    private final JRadioButton directeurEmploye;
-    private final JRadioButton fonctionEmploye;
-    private final JRadioButton serviceEmploye;
+   
     
     //Pour rechercher par infirmier //OK
     private final JTextField infirmier;
     private final JButton rechercheInfirmier;
     private final JRadioButton defautInfirmier;
-    private final JRadioButton salaireInfirmier;
+    //private final JRadioButton salaireInfirmier;
     private final JRadioButton rotationInfirmier;
     private final JRadioButton serviceInfirmier;
+    private final JRadioButton maladeInfirmier; //A FAIRE ?
     
-    //Pour rechercher par malade
+    //Pour rechercher par malade //OK
     private final JTextField malade;
     private final JButton rechercheMalade;
     private final JRadioButton defautMalade;
     private final JRadioButton mutuelleMalade;
     private final JRadioButton chambreMalade;
-    private final JRadioButton docteurMalade; //PAS OK 
+    private final JRadioButton docteurMalade; 
+    //private final JRadioButton infirmierMalade; //A FAIRE ?
+    //private final JRadioButton surveillantMalade; //A FAIRE 
     
     //Pour rechercher par service
     private final JTextField service;
@@ -85,7 +81,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     private final JRadioButton defautService;
     private final JRadioButton nomService;
     private final JRadioButton batimentService;
-    private final JRadioButton employeService; //PAS OK
+    private final JRadioButton directeurService; //A FAIRE
     
     
     /**
@@ -103,23 +99,16 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         setVisible(false);
 
         // creation des boutons
-        connect = new JButton("Connexion ECE");
-        local = new JButton("Connexion locale");
-        exec = new JButton("Executer");
+
 
         // creation des listes pour les tables et les requetes
         listeDeTables = new java.awt.List(10, false);
         listeDeRequetes = new java.awt.List(10, false);
 
         // creation des textes
-        nameECETexte = new JTextField();
-        passwdECETexte = new JPasswordField(8);
-        loginBDDTexte = new JTextField();
-        passwdBDDTexte = new JPasswordField(8);
-        nameBDDTexte = new JTextField("hopital");
         fenetreLignes = new JTextArea();
         fenetreRes = new JTextArea();
-        requeteTexte = new JTextField();
+        //requeteTexte = new JTextField();
         
         //Pour rechercher par chambre
         chambre=new JTextField();
@@ -145,38 +134,38 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         defautDocteur=new JRadioButton("par défaut");
         defautDocteur.setSelected(true);
         ButtonGroup bgDocteur = new ButtonGroup();
+        bgDocteur.add(defautDocteur);
         bgDocteur.add(soigneDocteur);
         bgDocteur.add(speDocteur);
-        bgDocteur.add(defautDocteur);
         bgDocteur.add(directeurDocteur);
         
         //Pour rechercher par employe
         employe=new JTextField();
+        employe.setMinimumSize(new Dimension(450,20));
+        employe.setPreferredSize(new Dimension(450,20));
+        employe.setMaximumSize(new Dimension(450,20));
+        //p5.setLayout(new BorderLayout());
+        
         rechercheEmploye=new JButton("Recherche le nom de l'employe");
         defautEmploye=new JRadioButton("par défaut");
         defautEmploye.setSelected(true);
-        directeurEmploye=new JRadioButton("par directeur");
-        fonctionEmploye=new JRadioButton("par fonction");
-        serviceEmploye=new JRadioButton("par service");
         ButtonGroup bgEmploye = new ButtonGroup();
         bgEmploye.add(defautEmploye);
-        bgEmploye.add(directeurEmploye);
-        bgEmploye.add(fonctionEmploye);
-        bgEmploye.add(serviceEmploye);
         
         //Pour rechercher par infirmier
         infirmier=new JTextField();
         rechercheInfirmier=new JButton("Recherche le nom de l'infirmier");
         defautInfirmier=new JRadioButton("par défaut");
         defautInfirmier.setSelected(true);
-        salaireInfirmier=new JRadioButton("par salaire");
         rotationInfirmier=new JRadioButton("par rotation");
         serviceInfirmier=new JRadioButton("par service");
+        maladeInfirmier=new JRadioButton("par malade");
         ButtonGroup bgInfirmier = new ButtonGroup(); 
         bgInfirmier.add(defautInfirmier);
-        bgInfirmier.add(salaireInfirmier);
+        //bgInfirmier.add(salaireInfirmier);
         bgInfirmier.add(rotationInfirmier);
         bgInfirmier.add(serviceInfirmier);
+        bgInfirmier.add(maladeInfirmier);
     
         //Pour rechercher par malade
         malade=new JTextField();
@@ -199,25 +188,15 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         defautService.setSelected(true);
         nomService=new JRadioButton("par nom");
         batimentService=new JRadioButton("par batiment");
-        employeService=new JRadioButton("par employe");
+        directeurService=new JRadioButton("par directeur");
         ButtonGroup bgService = new ButtonGroup(); 
         bgService.add(defautService);
         bgService.add(nomService);
         bgService.add(batimentService);
-        bgService.add(employeService);
+        bgService.add(directeurService);
 
 
         // creation des labels
-        //tab = new JLabel("Tables", JLabel.CENTER);
-        //lignes = new JLabel("Lignes", JLabel.CENTER);
-        //req = new JLabel("Requetes de sélection", JLabel.CENTER);
-        //res = new JLabel("Résultats requête", JLabel.CENTER);
-        nameECE = new JLabel("login ECE :", JLabel.CENTER);
-        passwdECE = new JLabel("password ECE :", JLabel.CENTER);
-        loginBDD = new JLabel("login base :", JLabel.CENTER);
-        passwdBDD = new JLabel("password base :", JLabel.CENTER);
-        nameBDD = new JLabel("nom base :", JLabel.CENTER);
-        requeteLabel = new JLabel("Entrez votre requete de sélection :", JLabel.CENTER);
 
         // creation des panneaux
         p0 = new JPanel();
@@ -234,14 +213,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         pA = new JPanel();
 
         // mise en page des panneaux
-        p0.setLayout(new GridLayout(1, 12)); //Pour la connexion
         p1.setLayout(new GridLayout(1, 6));//Pour la chambre
         nord.setLayout(new GridLayout(1, 1));
         p2.setLayout(new GridLayout(1, 1));//Pour les résultats
         
         p3.setLayout(new GridLayout(1,3)); //regroupe p1,p4,p5
         p4.setLayout(new GridLayout(1,6));//Pour le docteur
-        p5.setLayout(new GridLayout(1,6));//Pour l'employe
+        p5.setLayout(new GridLayout(1,3));//Pour l'employe
         
         p6.setLayout(new GridLayout(1,6));//Pour l'infirmier
         p7.setLayout(new GridLayout(1,6));//Pour le malade
@@ -250,32 +228,11 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
 
 
         // ajout des objets graphqiues dans les panneaux
-        p0.add(nameECE);
-        p0.add(nameECETexte);
-        p0.add(passwdECE);
-        p0.add(passwdECETexte);
-        p0.add(loginBDD);
-        p0.add(loginBDDTexte);
-        p0.add(passwdBDD);
-        p0.add(passwdBDDTexte);
-        p0.add(connect);
-        p0.add(nameBDD);
-        p0.add(nameBDDTexte);
-        p0.add(local);
-        //p1.add(tab);
-        //p1.add(lignes);
-        //p1.add(req);
-        //p1.add(res);
-        nord.add("North", p0);
-        //nord.add(p1);
-        
-        //p2.add(listeDeTables);
-        //p2.add(fenetreLignes);
-        //p2.add(listeDeRequetes);
+
         //Essai pour position le bouton et les RadioButton pour la recherche par chambre
         p1.setLayout(new BoxLayout(p1,BoxLayout.PAGE_AXIS));
         chambre.setPreferredSize(new Dimension(20,20));
-        p1.add(chambre); //mal placé
+        p1.add(chambre); 
         p1.add(rechercheChambre);
         p1.add(malades);
         p1.add(batiments);
@@ -296,11 +253,12 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
          p5.setLayout(new BoxLayout(p5,BoxLayout.PAGE_AXIS));
          p5.add(employe);
          p5.add(rechercheEmploye);
-         p5.add(fonctionEmploye);
-         p5.add(serviceEmploye);
-         p5.add(directeurEmploye);
          p5.add(defautEmploye);
-
+         
+        p5.add(p0,BorderLayout.SOUTH);
+        /*p0.setMinimumSize(new Dimension(300,100));
+        p0.setPreferredSize(new Dimension(300,100));
+        p0.setMaximumSize(new Dimension(300,100));*/
         
         p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
         p3.add(p1);
@@ -315,8 +273,9 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p6.add(rechercheInfirmier);
         p6.add(rotationInfirmier);
         p6.add(serviceInfirmier);
-        p6.add(salaireInfirmier);
+        p6.add(maladeInfirmier);
         p6.add(defautInfirmier);
+
         
         //Pour recherche par malalde
         p7.setLayout(new BoxLayout(p7,BoxLayout.PAGE_AXIS));
@@ -333,7 +292,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         p8.add(rechercheService);
         p8.add(nomService);
         p8.add(batimentService);
-        p8.add(employeService);
+        p8.add(directeurService);
         p8.add(defautService);
         
         p9.setLayout(new BoxLayout(p9,BoxLayout.LINE_AXIS));
@@ -344,28 +303,12 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         pA.setLayout(new BoxLayout(pA,BoxLayout.PAGE_AXIS));
         pA.add(p3);
         pA.add(p9);
-     
-        
-        //p3.add(requeteLabel);
-        //p3.add(requeteTexte);
-        //p3.add(exec);
-        
-        //Pour rechercher la chambre
-        /*p1.add(chambre); //mal placé
-        p1.add(rechercheChambre);
-        p1.add(malades);*/
-        
-
+ 
         // ajout des listeners
-        connect.addActionListener(this);
-        exec.addActionListener(this);
-        local.addActionListener(this);
-        nameECETexte.addActionListener(this);
-        passwdECETexte.addActionListener(this);
-        loginBDDTexte.addActionListener(this);
-        passwdBDDTexte.addActionListener(this);
+
         listeDeTables.addItemListener(this);
         listeDeRequetes.addItemListener(this);
+        
         //Pour rechercher par chambre
         chambre.addActionListener(this);
         rechercheChambre.addActionListener(this);
@@ -386,30 +329,18 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         employe.addActionListener(this); 
         rechercheEmploye.addActionListener(this); 
         defautEmploye.addActionListener(this); 
-        directeurEmploye.addActionListener(this); 
-        fonctionEmploye.addActionListener(this); 
-        serviceEmploye.addActionListener(this); 
-        // couleurs des objets graphiques
-        //tab.setBackground(Color.MAGENTA);
-        //lignes.setBackground(Color.MAGENTA);
-        //req.setBackground(Color.MAGENTA);
-        //res.setBackground(Color.MAGENTA);
-        //listeDeTables.setBackground(Color.CYAN);
-        //fenetreLignes.setBackground(Color.WHITE);
-        //listeDeRequetes.setBackground(Color.GREEN);
+
         fenetreRes.setBackground(Color.LIGHT_GRAY);
-        //p1.setBackground(Color.LIGHT_GRAY);
-        //p1.setBackground(Color.WHITE);
-        
+
         //Pour rechercher par infirmier
         infirmier.addActionListener(this); 
         rechercheInfirmier.addActionListener(this); 
         defautInfirmier.addActionListener(this); 
-        salaireInfirmier.addActionListener(this); 
+        //salaireInfirmier.addActionListener(this); 
         rotationInfirmier.addActionListener(this); 
         serviceInfirmier.addActionListener(this); 
+        maladeInfirmier.addActionListener(this); 
 
-    
         //Pour rechercher par malade
         malade.addActionListener(this); 
         rechercheMalade.addActionListener(this); 
@@ -425,15 +356,14 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         defautService.addActionListener(this); 
         nomService.addActionListener(this); 
         batimentService.addActionListener(this); 
-        employeService.addActionListener(this); 
+        directeurService.addActionListener(this); 
      
 
         // disposition geographique des panneaux
-        add("North", nord);
+        //add("North", nord);
         add("Center",p2);
         add("South",pA);
         
-
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
             @Override
@@ -446,55 +376,21 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     /**
      * Méthode privée qui initialise la liste des tables
      */
-    private void remplirTables() {
-        maconnexion.ajouterTable("chambre");
-        maconnexion.ajouterTable("docteur");
-        maconnexion.ajouterTable("employe");
-        maconnexion.ajouterTable("hospitalisation");
-        maconnexion.ajouterTable("infirmier");
-        maconnexion.ajouterTable("malade");
-        maconnexion.ajouterTable("service");
-        maconnexion.ajouterTable("soigne");
-        
-    }
+    
 
     /**
      * Méthode privée qui initialise la liste des requetes de selection
      */
-    private void remplirRequetes() {
-        /*maconnexion.ajouterRequete("SELECT ename, sal FROM Emp ORDER BY sal;");
-        maconnexion.ajouterRequete("SELECT Dept.*, Emp.*, Mission.* FROM Dept, Emp, Mission WHERE Dept.deptno=Emp.deptno AND Emp.empno=Mission.empno;");
-        maconnexion.ajouterRequete("SELECT AVG (Emp.sal) FROM Emp, Mission WHERE Emp.empno = Mission.empno;");
-        maconnexion.ajouterRequete("SELECT Dept.*, Emp.* FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND comm>0;");
-        maconnexion.ajouterRequete("SELECT hiredate, empno, ename FROM Emp WHERE (((hiredate)>='1981-05-01' And (hiredate)<'1981-05-31'))ORDER BY hiredate;");
-        maconnexion.ajouterRequete("SELECT ename, job FROM Emp ORDER BY job;");
-        maconnexion.ajouterRequete("SELECT DISTINCT dname, job FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND job='Clerk';");*/
-    }
 
     /**
      * Méthode privée qui initialise la liste des requetes de MAJ
      */
-    private void remplirRequetesMaj() {
-        // Requêtes d'insertion
-        maconnexion.ajouterRequeteMaj("INSERT INTO Dept (deptno,dname,loc) VALUES (50,'ECE','Paris');");
-
-        // Requêtes de modification
-        maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
-
-        // Requêtes de suppression
-        maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
-
-    }
+    
 
     /**
      *
      * Afficher les tables
      */
-    public void afficherTables() {
-        for (String table : maconnexion.tables) {
-            listeDeTables.add(table);
-        }
-    }
 
     /**
      *
@@ -573,29 +469,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         return liste;
     }
     
-     public ArrayList<String> afficherRes2(String requeteSelectionnee) throws SQLException {
-        ArrayList <String> liste = null;
-        try {
-
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            // recupérér les résultats de la requete selectionnee
-            liste = maconnexion.remplirChampsRequete2(requeteSelectionnee);
-
-            // afficher les lignes de la requete selectionnee a partir de la liste
-            fenetreRes.setText("");
-            for (String liste1 : liste) {
-                fenetreRes.append(liste1);
-            }
-        } catch (SQLException e) {
-            // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec requete SQL");
-        }
-        return liste;
-         
-     }
+    
+    
 
     /**
      *
@@ -610,119 +485,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         Object source = evt.getSource();
 
         // tester cas de la commande evenementielle
-        if (source == connect) {
-            ArrayList<String> liste;
-            String passwdECEString = new String(passwdECETexte.getPassword());
-            String passwdBDDString = new String(passwdBDDTexte.getPassword());
-            //try {
-                //try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                   // maconnexion = new Connexion(nameECETexte.getText(), passwdECEString,
-                       //     loginBDDTexte.getText(), passwdBDDString);
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
-
-                    // initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-                    remplirRequetes();
-                    remplirRequetesMaj();
-
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-                    afficherRequetes();
-
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                    // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-
-                    // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-                try {
-                    // afficher les résultats de la requete selectionnee
-                    afficherRes(requeteSelectionnee);
-                    //} catch (ClassNotFoundException cnfe) {
-                    //  System.out.println("Connexion echouee : probleme de classe");
-                    //cnfe.printStackTrace();
-                    // }
-                    //} catch (SQLException e) {
-                    //  System.out.println("Connexion echouee : probleme SQL");
-                    // e.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            //}
-//        } else if (source == local) {
-//            ArrayList<String> liste;
-//            try {
-//                //try {
-//                    // tentative de connexion si les 4 attributs sont remplis
-//                    //maconnexion = new Connexion(nameBDDTexte.getText(), "root", "");
-//
-//                    // effacer les listes de tables et de requêtes
-//                    listeDeTables.removeAll();
-//                    listeDeRequetes.removeAll();
-//
-//                    // initialisation de la liste des requetes de selection et de MAJ
-//                    remplirTables();
-//                    remplirRequetes();
-//                    remplirRequetesMaj();
-//
-//                    // afficher la liste de tables et des requetes
-//                    afficherTables();
-//                    afficherRequetes();
-//
-//                    // se positionner sur la première table et requête de selection
-//                    listeDeTables.select(0);
-//                    listeDeRequetes.select(0);
-//
-//                    // afficher les champs de la table sélectionnée
-//                    String nomTable = listeDeTables.getSelectedItem();
-//
-//                    // recuperer les lignes de la table selectionnee
-//                    afficherLignes(nomTable);
-//
-//                    // recuperer la liste des lignes de la requete selectionnee
-//                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-//
-//                    // afficher les résultats de la requete selectionnee
-//                    afficherRes(requeteSelectionnee);
-//                //} catch (ClassNotFoundException cnfe) {
-//                  //  System.out.println("Connexion echouee : probleme de classe");
-//                    //cnfe.printStackTrace();
-//                //}
-//            } catch (SQLException e) {
-//                System.out.println("Connexion echouee : probleme SQL");
-//                e.printStackTrace();
-//            }
-        } else if (source == exec) {
-            String requeteSelectionnee = requeteTexte.getText(); // récupérer le texte de la requête
-
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            try {
-                // afficher les résultats de la requete selectionnee
-                if (afficherRes(requeteSelectionnee) != null) {
-                    maconnexion.ajouterRequete(requeteSelectionnee);
-                    listeDeRequetes.removeAll();
-                    afficherRequetes();
-                }
-
-            } catch (SQLException ex) {
-
-            }
-
-        }
-        else if (source==rechercheChambre)
+    
+        if (source==rechercheChambre)
         {
             int numChambre = Integer.parseInt(chambre.getText()); //le numéro de chambre que l'utilisateur entre converti en int
             String requeteSelectionnee = null;
@@ -746,20 +510,15 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 
                 //CREATION DU TABLEAU
                 /*try {
-                    Object[][] data = new Object[2][4];
+                    Object[][] data = new Object[afficherRes(requeteSelectionnee).size()][10];
                     //AJOUT
                     int i = 0;
-                    //while (i < ()){
-                    data[0][0] = afficherRes2(requeteSelectionnee).get(0);
-                    data[0][1] = afficherRes2(requeteSelectionnee).get(1);
-                    data[0][2] = afficherRes2(requeteSelectionnee).get(2);
-                    data[0][3] = afficherRes2(requeteSelectionnee).get(3);
-                    data[1][0] = afficherRes2(requeteSelectionnee).get(4);
-                    data[1][1] = afficherRes2(requeteSelectionnee).get(5);
-                    data[1][2] = afficherRes2(requeteSelectionnee).get(6);
-                    data[1][3] = afficherRes2(requeteSelectionnee).get(7);
+                    while (i < afficherRes(requeteSelectionnee).size()){
+                        data[i][0] = afficherRes(requeteSelectionnee).get(i);
+                        data[i][1] = afficherRes(requeteSelectionnee).get(i+1);
+                        i=i+2;
  
-                    //} 
+                    } 
                     //FIN AJOUT
                     String[] title = {"num chambre","service","code","nom"};
                     JTable tableau = new JTable(data,title);
@@ -822,8 +581,9 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             }
             if (directeurDocteur.isSelected())
             {//PAS OK 
-                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
-                        + "JOIN service ON employe.numero=service.directeur "
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM service "
+                        + "JOIN employe ON employe.numero=service.directeur "
+                        + "JOIN docteur ON docteur.numero=employe.numero "
                         + "WHERE employe.nom LIKE '" + nomDoc + "%';";
                 
             }
@@ -849,24 +609,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             String nomEmploye = employe.getText();
             String requeteSelectionnee=null;
             
-
-            if (directeurEmploye.isSelected())
-            {//PAS OK
-                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
-                        + "JOIN service ON employe.numero=service.directeur "
-                        + "WHERE employe.nom LIKE '" + nomEmploye + "%';";
-                        
-                
-            }
-            if (fonctionEmploye.isSelected())
-            {//PAS OK
-                
-            }
-            if (serviceEmploye.isSelected())
-            {//PAS OK 
-                
-            }
-            else if (defautEmploye.isSelected())
+            
+            if (defautEmploye.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT employe.nom,employe.prenom,employe.adresse,employe.tel FROM employe"
                        + " WHERE employe.nom LIKE '" + nomEmploye + "%';";
@@ -884,12 +628,12 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         {//OK
             String nomInfirmier = infirmier.getText();
             String requeteSelectionnee=null;
-            if (salaireInfirmier.isSelected())
+            /*if (salaireInfirmier.isSelected())
             {//OK 
                 requeteSelectionnee = "SELECT infirmier.salaire FROM infirmier"
                         + " JOIN employe ON employe.numero=infirmier.numero"
                         + " WHERE employe.nom LIKE '" + nomInfirmier + "%';"; 
-            }
+            }*/
             if (rotationInfirmier.isSelected())
             {//OK                
                  requeteSelectionnee = "SELECT infirmier.rotation FROM infirmier"
@@ -902,6 +646,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN employe ON employe.numero=infirmier.numero"
                         + " WHERE employe.nom LIKE '" + nomInfirmier + "%';";
             }
+            
             else if (defautInfirmier.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT employe.nom,employe.prenom,employe.adresse,employe.tel FROM infirmier"
@@ -933,9 +678,11 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                           + " WHERE malade.nom LIKE '" + nomMalade+ "%';";
             }
             if (docteurMalade.isSelected())
-            {//PAS OK 
-                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe"
-                        + " JOIN docteur ON docteur.numero=employe.numero"
+            {//OK 
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM docteur"
+                        + " JOIN employe ON docteur.numero=employe.numero"
+                        + " JOIN soigne ON docteur.numero=soigne.no_docteur"
+                        + " JOIN malade ON malade.numero=soigne.no_malade"
                         + " WHERE malade.nom LIKE '" + nomMalade+ "%';";
             }
             else if (defautMalade.isSelected())
@@ -967,9 +714,11 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                  requeteSelectionnee = "SELECT service.batiment FROM service"
                          + " WHERE service.code LIKE '" + codeService + "%';"; 
             }
-            if (employeService.isSelected())
-            {//PAS OK 
-                requeteSelectionnee = "SELECT ";
+            if (directeurService.isSelected())
+            { // OK
+                requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
+                        + "JOIN service ON service.directeur=employe.numero "
+                        + " WHERE service.code LIKE '" + codeService + "%';"; 
             }
             else if (defautService.isSelected())
             {//OK
@@ -1014,21 +763,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     public void init(){
             ArrayList<String> liste;
             try {
-                //try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                    //maconnexion = new Connexion(nameBDDTexte.getText(), "root", "");
 
                     // effacer les listes de tables et de requêtes
                     listeDeTables.removeAll();
                     listeDeRequetes.removeAll();
 
                     // initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-                    remplirRequetes();
-                    remplirRequetesMaj();
 
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
                     afficherRequetes();
 
                     // se positionner sur la première table et requête de selection
@@ -1046,10 +787,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
 
                     // afficher les résultats de la requete selectionnee
                     afficherRes(requeteSelectionnee);
-                //} catch (ClassNotFoundException cnfe) {
-                  //  System.out.println("Connexion echouee : probleme de classe");
-                    //cnfe.printStackTrace();
-                //}
+
             } catch (SQLException e) {
                 System.out.println("Connexion echouee : probleme SQL");
                 e.printStackTrace();
