@@ -477,15 +477,22 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
             
             
 // ------ Camembert 
-            liste = maconnexion.remplirChampsRequete("SELECT * FROM `malade` WHERE 1");
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(D) FROM (SELECT no_docteur as D ,COUNT(no_malade) as N FROM `soigne` as S GROUP BY no_docteur) as M WHERE N>5");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            i = Integer.parseInt(a);
+            liste = maconnexion.remplirChampsRequete("SELECT COUNT(D) FROM (SELECT no_docteur as D ,COUNT(no_malade) as N FROM `soigne` as S GROUP BY no_docteur) as M WHERE N<=5");
+            a = liste.get(0);
+            a = a.replace("\n", "");
+            j = Integer.parseInt(a);
 //            System.out.println(liste);
             // create a dataset... 
             DefaultPieDataset dataset2 = new DefaultPieDataset();
-            dataset2.setValue("Libre", 2);
-            dataset2.setValue("Occupé", 10);
+            dataset2.setValue("Docteurs s'occupant de plus de 5 patient "+i, i);
+            dataset2.setValue("Docteurs s'occupant de 5 patient ou moins "+j, j);
 // create a chart... 
             JFreeChart chart2 = ChartFactory.createPieChart(
-                    "Occupation chambres",
+                    "Occupation des medecins",
                     dataset2,
                     true, // legend?
                     true, // tooltips?
@@ -847,7 +854,7 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
 //            dataset.addValue(k3, "Max", "Chirurgie generale");
 //            dataset.addValue(i3, "Max", "Reanimation et Traumatologie");
             JFreeChart chart3 = ChartFactory.createBarChart(
-                    "Salaire des infirmiers", // chart title 
+                    "Nombre de medecins par patient", // chart title 
                     "", // domain axis label 
                     "Moyenne", // range axis label 
                     dataset, // data 
