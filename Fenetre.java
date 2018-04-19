@@ -165,7 +165,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         add("North", nord);
         add("Center",p1);
          
-        
+         validate(); 
 
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
