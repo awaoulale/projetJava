@@ -32,6 +32,8 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     public Connexion maconnexion;
     private final java.awt.List listeDeTables, listeDeRequetes;
     private final JTextArea fenetreLignes, fenetreRes;
+    private final JLabel fenetreRes2 = new JLabel();
+    private final JPanel p0 = new JPanel();
     private final JPanel p1, p2, p3, p4, p5, p6, p7, p8, pD, pI, pM, pE, pC, pS;
     
     //pour rechercher par chambre //OK
@@ -110,16 +112,20 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         // creation des textes
         fenetreLignes = new JTextArea();
         fenetreRes = new JTextArea();
+        
+        
+        
         //requeteTexte = new JTextField();
         
         //Pour rechercher par chambre
-        chambre=new JTextField();
+        chambre=new JTextField("");
         rechercheChambre = new JButton("Recherche le num de la chambre");
         malades = new JRadioButton("par malades");
         batiments = new JRadioButton("par batiments");
         surveillantChambre = new JRadioButton("par surveillant");
         defautChambre=new JRadioButton("par défaut");
         defautChambre.setSelected(true);
+      
         ButtonGroup bgChambre = new ButtonGroup(); //pour selectioner 1 seul RadioButton à la fois
         bgChambre.add(malades);
         bgChambre.add(batiments);
@@ -222,10 +228,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         
 
         // mise en page des panneaux
-        p1.setLayout(new GridLayout(6, 1));//Pour la chambre
-        p2.setLayout(new GridLayout(1, 1));//Pour les résultats
+        p1.setLayout(new GridLayout(6,1));//Pour la chambre
+        p2.setLayout(new GridLayout(1,1));//Pour les résultats
         
-        p3.setLayout(new GridLayout(2,3, 30, 20)); //regroupe p1,p4,p5,p6,p7,p8
+        p3.setLayout(new GridLayout(2,3,30,20)); //regroupe p1,p4,p5,p6,p7,p8
         p4.setLayout(new GridLayout(6,1));//Pour le docteur
         p5.setLayout(new GridLayout(1,3));//Pour l'employe
         
@@ -300,10 +306,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
          p5.add(defautEmploye);
          p5.add(telEmploye);
          p5.add(adresseEmploye);
-        
-        
-              
-        p2.add(fenetreRes);
+
         
          //Pour recherche par infirmier
         p6.setLayout(new BoxLayout(p6,BoxLayout.PAGE_AXIS));
@@ -429,8 +432,14 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
 
         // disposition geographique des panneaux
         //add("North", nord);
-        add("Center",p2);
+        //p0.add(fenetreRes2);
+        //p2.add(fenetreRes);
+        //add("North",p2);
         add("South",p3);
+        add(fenetreRes2); //Pour afficher les tableaux
+        add(fenetreRes); //Pour afficher avec les virgules comme avant
+        //add("North",p0);
+        
         
         // pour fermer la fenetre
         addWindowListener(new WindowAdapter() {
@@ -537,6 +546,58 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         return liste;
     }
     
+    public ArrayList<String> afficherRes2(String requeteSelectionnee) throws SQLException {
+        ArrayList<String> liste = null;
+        try {
+
+            // effacer les résultats
+            fenetreRes2.removeAll();
+
+            // recupérér les résultats de la requete selectionnee
+            liste = maconnexion.remplirChampsRequete2(requeteSelectionnee);
+
+            // afficher les lignes de la requete selectionnee a partir de la liste
+            fenetreRes2.setText("");
+            
+            for (String liste1 : liste) { 
+                //fenetreRes.append(liste1);
+                fenetreRes2.setText(liste1);
+                           } 
+            //AJOUT
+            /*for (int i=7; i<liste.size();i++)
+            {
+                fenetreRes.append(liste.get(i));
+            }*/
+            //FIN AJOUT 
+        } catch (SQLException e) {
+            // afficher l'erreur dans les résultats
+            fenetreRes2.setText("");
+            fenetreRes2.setText("Echec requete SQL"); //MIS EN COM
+        }
+        return liste;
+    }
+    
+    void afficherTableau(int nbColonnes, String reqSel, String[] title)
+    {
+        
+         try {
+                    int nbLignes = (afficherRes2(reqSel).size())/nbColonnes;
+                    Object[][] data = new Object[nbLignes][nbColonnes];
+                    int n=0;
+                    for (int k=0;k<nbLignes;k++)
+                    {
+                        for (int l=0;l<nbColonnes;l++)
+                        {
+                            data[k][l]=afficherRes2(reqSel).get(n);
+                            n++;
+                        }
+                    }
+                    JTable tableau= new JTable(data,title);
+                    this.getContentPane().add(new JScrollPane(tableau));
+               } catch (SQLException ex) {
+                  Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
     
     
 
@@ -551,13 +612,13 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     @SuppressWarnings("CallToThreadDumpStack")
     public void actionPerformed(ActionEvent evt) {
         Object source = evt.getSource();
-
         // tester cas de la commande evenementielle
-    
+        
         if (source==rechercheChambre)
         {
             int numChambre = Integer.parseInt(chambre.getText()); //le numéro de chambre que l'utilisateur entre converti en int
             String requeteSelectionnee = null;
+            
             if (malades.isSelected())
             { //OK
                
@@ -567,7 +628,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                                       + " JOIN service ON service.code=hospitalisation.code_service"
                                       + " WHERE hospitalisation.no_chambre=" + numChambre + ";"; 
                               
-
+            String[] titre = {"Batiment","Nom du malade","Prénom du malade","Code du service","Nom du service"};
+            int nbCol=5;
+            afficherTableau(nbCol,requeteSelectionnee,titre);
+            
             }
             if (batiments.isSelected())
             { //OK
@@ -575,29 +639,37 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 requeteSelectionnee = "SELECT service.batiment,service.code, service.nom"
                         + "            FROM service JOIN chambre ON service.code=chambre.code_service "
                         + "            WHERE chambre.no_chambre=" + numChambre + ";";
-                        
+                 
+            String[] titre = {"Batiment","Code du service","Nom du service"};
+              int nbCol=3;
+             afficherTableau(nbCol,requeteSelectionnee,titre);
             }
+            
             if (surveillantChambre.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT chambre.code_service,employe.nom,employe.prenom FROM chambre"
                         + " JOIN employe ON chambre.surveillant=employe.numero"
                         + " WHERE chambre.no_chambre=" + numChambre + ";";
-               
+                
+            String[] titre = {"Code du service","Nom de l'employé","Prénom de l'employé"};
+              int nbCol=3;
+              afficherTableau(nbCol,requeteSelectionnee,titre);
             }
-            else if (defautChambre.isSelected())
+            if (defautChambre.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT chambre.code_service,chambre.nb_lits FROM chambre"
                         + " WHERE chambre.no_chambre=" + numChambre + ";";
-               
+              
+             String[] titre = {"Code du service","Nombre de lits"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             
-            try {
-                
+           /* try {
                 afficherRes(requeteSelectionnee);
-
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         else if (source==rechercheDocteur)
         {
@@ -611,6 +683,9 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + "WHERE employe.nom LIKE '" + nomDoc + "%' "
                         + "AND employe.prenom LIKE '" + prenomDoc + "%';";
                 
+                String[] titre = {"Spécialité du docteur"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
 
             }
             if (soigneDocteur.isSelected())
@@ -622,6 +697,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + "WHERE employe.nom LIKE '" + nomDoc + "%' "
                         + "AND employe.prenom LIKE '" + prenomDoc + "%';";
                 
+                String[] titre = {"Nom du malade","Prénom du malade"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
+                
             }
             else if (defautDocteur.isSelected()) 
             {//OK 
@@ -629,14 +708,18 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + "INNER JOIN employe ON employe.numero=docteur.numero "
                         + "WHERE employe.nom LIKE '" + nomDoc + "%' "
                         + "AND employe.prenom LIKE '" + prenomDoc + "%';";
+                
+                String[] titre = {"Nom du docteur","Prénom du docteur","Adresse du docteur","Code postal","Téléphone du docteur"};
+               int nbCol=5;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
 
             
-            try {
+            /*try {
                 afficherRes(requeteSelectionnee);
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre2.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
 
 
         }
@@ -651,26 +734,38 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 requeteSelectionnee = "SELECT employe.adresse FROM employe"
                        + " WHERE employe.nom LIKE '" + nomEmpl + "%'"
                        + " AND employe.prenom LIKE '" + prenomEmpl + "%';";
+                
+                String[] titre = {"Adresse de l'employé","Code postal"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             if (telEmploye.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT employe.tel FROM employe"
                        + " WHERE employe.nom LIKE '" + nomEmpl + "%'"
                        + " AND employe.prenom LIKE '" + prenomEmpl + "%';";
+                
+                String[] titre = {"Téléphone de l'employé"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             else if (defautEmploye.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT employe.nom,employe.prenom,employe.adresse,employe.tel FROM employe"
                        + " WHERE employe.nom LIKE '" + nomEmpl + "%'"
                        + " AND employe.prenom LIKE '" + prenomEmpl + "%';";
+                
+                String[] titre = {"Nom de l'employé","Prénom de l'employé","Adresse de l'employé","Code postal","Téléphone de l'employé"};
+               int nbCol=5;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
-            try {
+            /*try {
                 
                 afficherRes(requeteSelectionnee);
 
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
                     
         }
         else if (source==rechercheInfirmier)
@@ -685,6 +780,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN employe ON chambre.surveillant=employe.numero"
                         + " WHERE employe.nom LIKE '" + nomInfi + "%'"
                         + " AND employe.prenom LIKE '" + prenomInfi + "%';"; 
+                
+                String[] titre = {"Numéro de chambre","Code su service"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             if (rotationInfirmier.isSelected())
             {//OK                
@@ -692,6 +791,11 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN employe ON employe.numero=infirmier.numero"
                        + " WHERE employe.nom LIKE '" + nomInfi + "%'"
                         + " AND employe.prenom LIKE '" + prenomInfi + "%';"; 
+                 
+                 String[] titre = {"Rotation"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
+                 
             }
             if (serviceInfirmier.isSelected())
             {//OK 
@@ -699,6 +803,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN employe ON employe.numero=infirmier.numero"
                         + " WHERE employe.nom LIKE '" + nomInfi + "%'"
                         + " AND employe.prenom LIKE '" + prenomInfi + "%';"; 
+                
+                String[] titre = {"Code du service"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             
             else if (defautInfirmier.isSelected())
@@ -707,14 +815,18 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN employe ON employe.numero=infirmier.numero"
                         + " WHERE employe.nom LIKE '" + nomInfi + "%'"
                         + " AND employe.prenom LIKE '" + prenomInfi + "%';"; 
+                
+                String[] titre = {"Nom de l'infirmier","Prénom de l'infirmier","Adresse de l'infirmier","Code postal","Téléphone de l'infirmier"};
+               int nbCol=5;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
-            try {
+           /* try {
                 
                 afficherRes(requeteSelectionnee);
 
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         else if (source==rechercheMalade)
         {
@@ -726,6 +838,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                 requeteSelectionnee = "SELECT malade.mutuelle FROM malade"
                         + " WHERE malade.nom LIKE '" + nomMal+ "%'"
                         + " AND malade.prenom LIKE '" + prenomMal+ "%';";
+                
+                String[] titre = {"Mutuelle du malade"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             if (chambreMalade.isSelected())
             {//OK                
@@ -734,6 +850,10 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                          + " JOIN service ON hospitalisation.code_service=service.code"
                           + " WHERE malade.nom LIKE '" + nomMal+ "%'"
                         + " AND malade.prenom LIKE '" + prenomMal+ "%';";
+                 
+                 String[] titre = {"Numéro de chambre","Code du service","Batiment","Nom du service"};
+               int nbCol=4;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             if (docteurMalade.isSelected())
             {//OK 
@@ -743,21 +863,29 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                         + " JOIN malade ON malade.numero=soigne.no_malade"
                         + " WHERE malade.nom LIKE '" + nomMal+ "%'"
                         + " AND malade.prenom LIKE '" + prenomMal+ "%';";
+                
+                String[] titre = {"Nom de l'employé","Prénom de l'employé"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             else if (defautMalade.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT malade.nom,malade.prenom,malade.adresse,malade.tel FROM malade"
                        + " WHERE malade.nom LIKE '" + nomMal+ "%'"
                         + " AND malade.prenom LIKE '" + prenomMal+ "%';";
+                
+                String[] titre = {"Nom du malade","Prénom du malade","Adresse du malade","Code postal","Téléphone du malade"};
+               int nbCol=5;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             
-            try {
+            /*try {
                 
                 afficherRes(requeteSelectionnee);
 
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         else if (source==rechercheService)
         {//OK
@@ -768,25 +896,37 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
             {//OK                
                  requeteSelectionnee = "SELECT service.batiment FROM service"
                          + " WHERE service.code LIKE '" + codeService + "%';"; 
+                 
+                 String[] titre = {"Batiment"};
+               int nbCol=1;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             if (directeurService.isSelected())
             { // OK
                 requeteSelectionnee = "SELECT employe.nom,employe.prenom FROM employe "
                         + "JOIN service ON service.directeur=employe.numero "
                         + " WHERE service.code LIKE '" + codeService + "%';"; 
+                
+                String[] titre = {"Nom du directeur","Prénom du directeur"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
             else if (defautService.isSelected())
             {//OK
                 requeteSelectionnee = "SELECT service.nom,service.batiment FROM service"
                          + " WHERE service.code LIKE '" + codeService + "%';"; 
+                
+                String[] titre = {"Nom du service","Batiment"};
+               int nbCol=2;
+           afficherTableau(nbCol,requeteSelectionnee,titre);
             }
-            try {
+            /*try {
                 
                 afficherRes(requeteSelectionnee);
 
             } catch (SQLException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
     }
 
@@ -815,9 +955,9 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     }
     
     
-    public void init(){
+    public void init(){ //MIS DES PARAM A 13H
             ArrayList<String> liste;
-            try {
+          //  try {
 
                     // effacer les listes de tables et de requêtes
                     listeDeTables.removeAll();
@@ -832,27 +972,27 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
                     listeDeRequetes.select(0);
 
                     // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
+                    //String nomTable = listeDeTables.getSelectedItem();
 
                     // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
+                    //afficherLignes(nomTable);
 
                     // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
+//                    String requeteSelectionnee = listeDeRequetes.getSelectedItem(); //MIS EN PARAM A 13H
 
                     // afficher les résultats de la requete selectionnee
-                    afficherRes(requeteSelectionnee);
+ //                   afficherRes(requeteSelectionnee); //PARAM 13H
 
-            } catch (SQLException e) {
+            //} catch (SQLException e) { PARAM 13H
                 System.out.println("Connexion echouee : probleme SQL");
-                e.printStackTrace();
-            }
+             //   e.printStackTrace(); //PARAM 13H
+           // } //PARAM 13H
     
     
     
-    }
+    //}
 
-    void addActionListener(Controleur aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //void addActionListener(Controleur aThis) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
