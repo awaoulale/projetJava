@@ -36,7 +36,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     private final JButton connect, local;*/
     private final java.awt.List listeDeTables;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel nord, p2; // j ai enleve p0
+    private final JPanel p2; // j ai enleve p0 et nord
     
     private final JPanel pDroit, pChoix, pChgt;
     private final JRadioButton insertion, suppression, maj;
@@ -107,8 +107,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         nameBDD = new JLabel("nom base :", JLabel.CENTER);*/
 
         // creation des panneaux
-        //p0 = new JPanel();
-        nord = new JPanel();
+       // p0 = new JPanel();
+        //nord = new JPanel();
         p2 = new JPanel();
         
         pDroit=new JPanel();
@@ -121,7 +121,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         
         // mise en page des panneaux
         //p0.setLayout(new GridLayout(1, 11));
-        nord.setLayout(new GridLayout(1, 1));
+        //nord.setLayout(new GridLayout(1, 1));
         p2.setLayout(new BorderLayout());
         pDroit.setLayout(new GridLayout(3,1));
 
@@ -152,18 +152,14 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p2.add(pDroit, BorderLayout.NORTH);    
        
         // ajout des listeners
-        /*connect.addActionListener(this);
-        local.addActionListener(this);*/
+        /**/
         
         insertion.addActionListener(this);
         suppression.addActionListener(this);
         maj.addActionListener(this);
         OK.addActionListener(this);
         
-        /*nameECETexte.addActionListener(this);
-        passwdECETexte.addActionListener(this);
-        loginBDDTexte.addActionListener(this);
-        passwdBDDTexte.addActionListener(this);*/
+        /**/
         
         listeDeTables.addItemListener(this);
         
@@ -174,7 +170,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         fenetreRes.setBackground(Color.GREEN);
         
         // disposition geographique des panneaux
-        add("North", nord);
+        //add("North", nord);
         add("Center", p2);
             
         //DOCTEUR
@@ -251,7 +247,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         maconnexion.ajouterTable("infirmier");
         maconnexion.ajouterTable("malade");
         maconnexion.ajouterTable("hospitalisation");
-        maconnexion.ajouterTable("soigne");
+        //maconnexion.ajouterTable("soigne"); pas
     }
 
 
@@ -337,7 +333,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
      *
      * Pour gerer les actions sur les boutons on utilise la fonction
      * actionPerformed
-     *
+     * Cette methode permet de faire les maj sur les tables
      * @param evt
      */
     @Override
@@ -384,7 +380,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
             ArrayList<String> liste;
             try {
                 try {
-                    // tentative de connexion si les 4 attributs sont remplis
+                    // tentative de connexion si les 3 attributs sont remplis
                     maconnexion = new Connexion(nameBDDTexte.getText(), "root", "root"); //MODIFIE CAR MAC
 
                     // effacer les listes de tables et de requêtes
@@ -421,9 +417,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 {
                     int numeroVal=Integer.parseInt(numeroText.getText());
                     String specialiteVal=specialiteText.getText();
-                    //maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES (25, 'Cardiologue');"); //REQUETE VALIDE
                     maconnexion.executeUpdate("INSERT INTO docteur(numero, specialite) VALUES('" + numeroVal + "', '" + specialiteVal + "');"); //REQUETE VALIDE
-                   
                     fenetreRes.setText("");
                     fenetreRes.append("insertion reussie");
                 } 
@@ -1174,7 +1168,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 }
                 maj.setSelected(false);
             }
-            //SOIGNE
         }
        
     }
@@ -1183,6 +1176,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
      *
      * Pour gerer les actions sur items d'une liste on utilise la methode
      * itemStateChanged
+     * Cette methode guide l'utilisateur pour les maj
      */
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
@@ -1317,22 +1311,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                 fenetreRes.append("Insertion:renseignez tous les champs\nSuppression: renseignez le code\n"
                         + "Mise a jour: renseignez le code puis rentrez un nouveau batiment et/ou un nouveau directeur");
             }
-            /*if("soigne".equals(nomTable))
-            {
-                pChgt.removeAll();
-                pChgt.setVisible(false);                
-                fenetreRes.setText("");
-                pChgt.add(no_docteur);
-                pChgt.add(no_docteurText);
-                pChgt.add(no_malade);
-                pChgt.add(no_maladeText);
-                pChgt.setVisible(true);                
-                fenetreRes.append("Insertion:renseignez le code, le batiment et le directeur\nSuppression: renseignez le code\n"
-                        + "Mise a jour: renseignez le code puis entrez un nouveau batiment et/ou un nouveau directeur"); 
-            } */
         }
     }
-    
-    
-   
 }
