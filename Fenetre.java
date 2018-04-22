@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * Affiche dans la fenetre graphique les champs de tables et les requetes de la
- * BDD
+ * Affiche dans la fenetre graphique les champs de tables
+ * et les objets graphiques permettant de modifier la BDD
  *
  * @author segado
  */
@@ -255,35 +255,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         }
     }
 
-
-    /**
-     *
-     * Afficher et retourner les résultats de la requete sélectionnée
-     *
-     * @param requeteSelectionnee
-     */
-    public ArrayList<String> afficherRes(String requeteSelectionnee) throws SQLException {
-        ArrayList<String> liste = null;
-        try {
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            // recupérér les résultats de la requete selectionnee
-            liste = maconnexion.remplirChampsRequete(requeteSelectionnee);
-
-            // afficher les lignes de la requete selectionnee a partir de la liste
-            fenetreRes.setText("");
-            for (String liste1 : liste) {
-                fenetreRes.append(liste1);
-            }
-        } catch (SQLException e) {
-            // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec requete SQL");
-        }
-        return liste;
-    }
-    
  
     /**
      *
