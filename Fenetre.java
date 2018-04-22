@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * Affiche dans la fenetre graphique les champs de tables et les requetes de la
- * BDD
+ * Affiche dans la fenetre graphique les champs de tables
+ * et les objets graphiques permettant de modifier la BDD
  *
  * @author segado
  */
@@ -30,13 +30,9 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
      */
 
     private Connexion maconnexion;
-    /*private final JLabel nameECE, passwdECE, loginBDD, passwdBDD, nameBDD;
-    private final JTextField nameECETexte, loginBDDTexte, nameBDDTexte;
-    private final JPasswordField passwdECETexte, passwdBDDTexte;
-    private final JButton connect, local;*/
     private final java.awt.List listeDeTables;
     private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p2; // j ai enleve p0 et nord
+    private final JPanel p2;
     
     private final JPanel pDroit, pChoix, pChgt;
     private final JRadioButton insertion, suppression, maj;
@@ -80,35 +76,16 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         setBounds(0, 0, 600, 600);
         setResizable(true);
         setVisible(true);
-
-        // creation des boutons
-        /*connect = new JButton("Connexion ECE");
-        local = new JButton("Connexion locale");*/
         
         OK=new JButton("OK");
         
         // creation de la liste pour les tables
         listeDeTables = new java.awt.List(10, false);
 
-        // creation des textes
-        /*nameECETexte = new JTextField();
-        passwdECETexte = new JPasswordField(8);
-        loginBDDTexte = new JTextField();
-        passwdBDDTexte = new JPasswordField(8);
-        nameBDDTexte = new JTextField();*/
-        
         fenetreLignes = new JTextArea();
         fenetreRes = new JTextArea();
         
-        /*nameECE = new JLabel("login ECE :", JLabel.CENTER);
-        passwdECE = new JLabel("password ECE :", JLabel.CENTER);
-        loginBDD = new JLabel("login base :", JLabel.CENTER);
-        passwdBDD = new JLabel("password base :", JLabel.CENTER);
-        nameBDD = new JLabel("nom base :", JLabel.CENTER);*/
-
-        // creation des panneaux
-       // p0 = new JPanel();
-        //nord = new JPanel();
+        // creation du grand panneau
         p2 = new JPanel();
         
         pDroit=new JPanel();
@@ -120,26 +97,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         maj=new JRadioButton("Mise a jour");   
         
         // mise en page des panneaux
-        //p0.setLayout(new GridLayout(1, 11));
-        //nord.setLayout(new GridLayout(1, 1));
         p2.setLayout(new BorderLayout());
         pDroit.setLayout(new GridLayout(3,1));
 
         // ajout des objets graphqiues dans les panneaux
-        /*p0.add(nameECE);
-        p0.add(nameECETexte);
-        p0.add(passwdECE);
-        p0.add(passwdECETexte);
-        p0.add(loginBDD);
-        p0.add(loginBDDTexte);
-        p0.add(passwdBDD);
-        p0.add(passwdBDDTexte);
-        p0.add(connect);
-        p0.add(nameBDD);
-        p0.add(nameBDDTexte);
-        p0.add(local);  
-        nord.add("North", p0);*/
-              
         p2.add(listeDeTables, BorderLayout.WEST);
         p2.add(fenetreLignes, BorderLayout.CENTER);
         pChoix.add(insertion);
@@ -152,15 +113,11 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p2.add(pDroit, BorderLayout.NORTH);    
        
         // ajout des listeners
-        /**/
-        
         insertion.addActionListener(this);
         suppression.addActionListener(this);
         maj.addActionListener(this);
         OK.addActionListener(this);
-        
-        /**/
-        
+                
         listeDeTables.addItemListener(this);
         
         listeDeTables.setBackground(Color.LIGHT_GRAY);
@@ -169,8 +126,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         pChgt.setBackground(Color.ORANGE);
         fenetreRes.setBackground(Color.GREEN);
         
-        // disposition geographique des panneaux
-        //add("North", nord);
+        // disposition geographique du grand panneau
         add("Center", p2);
             
         //DOCTEUR
@@ -247,7 +203,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         maconnexion.ajouterTable("infirmier");
         maconnexion.ajouterTable("malade");
         maconnexion.ajouterTable("hospitalisation");
-        //maconnexion.ajouterTable("soigne"); pas
+        //maconnexion.ajouterTable("soigne"); pas de maj sur cette table
     }
 
 
@@ -299,35 +255,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         }
     }
 
-
-    /**
-     *
-     * Afficher et retourner les résultats de la requete sélectionnée
-     *
-     * @param requeteSelectionnee
-     */
-    public ArrayList<String> afficherRes(String requeteSelectionnee) throws SQLException {
-        ArrayList<String> liste = null;
-        try {
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            // recupérér les résultats de la requete selectionnee
-            liste = maconnexion.remplirChampsRequete(requeteSelectionnee);
-
-            // afficher les lignes de la requete selectionnee a partir de la liste
-            fenetreRes.setText("");
-            for (String liste1 : liste) {
-                fenetreRes.append(liste1);
-            }
-        } catch (SQLException e) {
-            // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec requete SQL");
-        }
-        return liste;
-    }
-    
  
     /**
      *
@@ -342,73 +269,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         Object source = evt.getSource();
 
         // tester cas de la commande evenementielle
-        /*if (source == connect) {
-            ArrayList<String> liste;
-            String passwdECEString = new String(passwdECETexte.getPassword());
-            String passwdBDDString = new String(passwdBDDTexte.getPassword());
-            try {
-                try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                    maconnexion = new Connexion(nameECETexte.getText(), passwdECEString,
-                            loginBDDTexte.getText(), passwdBDDString);
-
-                    // effacer la liste de tables
-                    listeDeTables.removeAll();
-
-                    //initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-
-                    // afficher la liste de tables
-                    afficherTables();
-
-                    // afficher les champs de la table sélectionnée
-                    listeDeTables.select(0);
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-                    
-                } catch (ClassNotFoundException cnfe) {
-                    System.out.println("Connexion echouee : probleme de classe");
-                    cnfe.printStackTrace();
-                }
-            } catch (SQLException e) {
-                System.out.println("Connexion echouee : probleme SQL");
-                e.printStackTrace();
-            }
-        } else  if (source == local) {
-            ArrayList<String> liste;
-            try {
-                try {
-                    // tentative de connexion si les 3 attributs sont remplis
-                    maconnexion = new Connexion(nameBDDTexte.getText(), "root", "root"); //MODIFIE CAR MAC
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    
-                    // initialisation de la liste des tables + des requetes de selection et de MAJ
-                    remplirTables();
-
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-
-                    // afficher les champs de la table sélectionnée
-                    listeDeTables.select(0);
-                    String nomTable = listeDeTables.getSelectedItem();
-                    
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-                  
-                } catch (ClassNotFoundException cnfe) {
-                    System.out.println("Connexion echouee : probleme de classe");
-                    cnfe.printStackTrace();
-                }
-            } catch (SQLException e) {
-                System.out.println("Connexion echouee : probleme SQL");
-                e.printStackTrace();
-            }         
-        }
-        else*/ if(source==OK) //PROCEDER A UNE MAJ (insertion, suppression ou modification)
+        if(source==OK) //PROCEDER A UNE MAJ (insertion, suppression ou modification)
         {
             //DOCTEUR
             if("docteur".equals(listeDeTables.getSelectedItem()) && insertion.isSelected() && !(suppression.isSelected()) && !(maj.isSelected()))
