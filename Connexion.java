@@ -11,6 +11,7 @@ package jdbcv2018;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 /**
  * 
  * Connexion a votre BDD locale ou à distance sur le serveur de l'ECE via le tunnel SSH
@@ -169,17 +170,13 @@ public class Connexion {
     public ArrayList remplirChampsRequete(String requete) throws SQLException {
         // récupération de l'ordre de la requete
         rset = stmt.executeQuery(requete);
-
         // récupération du résultat de l'ordre
         rsetMeta = rset.getMetaData();
-
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
-
         // creation d'une ArrayList de String
         ArrayList<String> liste;
         liste = new ArrayList<String>();
-
         // tant qu'il reste une ligne 
         while (rset.next()) {
             String champs;
@@ -189,17 +186,57 @@ public class Connexion {
             for (int i = 1; i < nbColonne; i++) {
                 champs = champs + "," + rset.getString(i + 1);
             }
-
             // ajouter un "\n" à la ligne des champs
             champs = champs + "\n";
-
             // ajouter les champs de la ligne dans l'ArrayList
             liste.add(champs);
         }
-
         // Retourner l'ArrayList
         return liste;
     }
+    
+    /**
+     * Methode qui retourne l'ArrayList des resultats des champs de la requete en parametre 
+     * @param requete
+     * @return 
+     * @throws java.sql.SQLException
+     */
+    public ArrayList remplirChampsRequete2(String requete) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<String>();
+        
+        // tant qu'il reste une ligne 
+        while (rset.next()) {
+            String champs;
+            champs = rset.getString(1); // ajouter premier champ
+            
+            // Concatener les champs de la ligne separes par ,
+            for (int i = 1; i < nbColonne; i++) {
+                champs = champs + "," + rset.getString(i + 1);
+            }
+            // ajouter un "\n" à la ligne des champs
+             champs = champs + "\n";
+             String[] tab=champs.split(","); //créer un tableau de String contenant tous les résultats 
+        
+             champs.split("\n"); //on enlève les retours à la ligne
+
+            // ajouter les résultats des champs de la ligne dans l'ArrayList
+            for (int i=0;i<tab.length;i++)
+            {liste.add(tab[i]);}
+            
+        }
+        // Retourner l'ArrayList
+        return liste;
+       
+    }
+    
 
     /**
      * Méthode qui execute une requete de MAJ en parametre
@@ -209,4 +246,6 @@ public class Connexion {
     public void executeUpdate(String requeteMaj) throws SQLException {
         stmt.executeUpdate(requeteMaj);
     }
+
+    
 }
