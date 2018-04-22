@@ -21,9 +21,11 @@ public class Controleur implements ActionListener{
     private static Fenetre5 f4;
     
     
+    /**
+     * Constructeur qui initialise toutes les fenetres
+     */
     public Controleur() {
 
-    //f.local.addActionListener(this);
     f.camembert.addActionListener(this);
     f.recherche.addActionListener(this);
     f.maj.addActionListener(this);
@@ -46,30 +48,35 @@ public class Controleur implements ActionListener{
         //f3 = new Fenetre3();
         f4 = new Fenetre5();
         Controleur c =new Controleur();
-      
-       
    
     }
-
-    @Override
+    
+    /**
+     *
+     * Pour gerer les actions sur les boutons on utilise la fonction
+     * actionPerformed
+     *
+     * @param evt
+     */
+     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()== f.recherche)
         {
             f2.setVisible(true);
             Connexion co= f.maconnexion;
-            f2.passwdECETexte=f.passwdECETexte;
-            f2.passwdBDDTexte=f.passwdBDDTexte;
-            f2.loginBDDTexte=f.loginBDDTexte;
+            //f2.passwdECETexte=f.passwdECETexte;
+            //f2.passwdBDDTexte=f.passwdBDDTexte;
+            //f2.loginBDDTexte=f.loginBDDTexte;
             f2.maconnexion=co;
-            int loc =f.loc;
+            //int loc =f.loc;
             f2.init();
         }
         if(e.getSource()== f.camembert)
         {        
             f3.setVisible(true);
             Connexion co= f.maconnexion;
-            f3.passwdECETexte=f.passwdECETexte;
-            f3.passwdBDDTexte=f.passwdBDDTexte;
+//            f3.passwdECETexte=f.passwdECETexte;
+//            f3.passwdBDDTexte=f.passwdBDDTexte;
             f3.loginBDDTexte=f.loginBDDTexte;
             f3.maconnexion=co;
             //f3.init();
@@ -83,6 +90,7 @@ public class Controleur implements ActionListener{
             //f4.loginBDDTexte=f.loginBDDTexte;
             f4.maconnexion=co;
             f4.init();
+            
         }
         
     }
