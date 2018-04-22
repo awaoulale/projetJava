@@ -952,24 +952,4 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
         }
     }
     
-    
-    public void init(){ 
-            ArrayList<String> liste;
-
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
-
-                    // initialisation de la liste des requetes de selection et de MAJ
-
-                    afficherRequetes();
-
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                System.out.println("Connexion echouee : probleme SQL");
-  
-    }
 }

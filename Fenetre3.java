@@ -69,7 +69,10 @@ public class Fenetre3 extends JFrame implements ActionListener, ItemListener {
         bout3 = new JButton("Infos infirmiers");
         bout5 = new JButton("Infos générales");
 
-     
+        bout1.setBackground(Color.GREEN);
+        bout2.setBackground(Color.GREEN);
+        bout3.setBackground(Color.GREEN);
+        bout5.setBackground(Color.GREEN);
 
 
 
