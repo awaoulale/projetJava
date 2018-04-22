@@ -497,6 +497,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     /**
      *
      * Afficher les lignes de la table sélectionnée
+     * @param nomTable
      */
     public void afficherLignes(String nomTable) {
         try {
@@ -547,6 +548,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
      * Afficher et retourner les résultats de la requete sélectionnée
      *
      * @param requeteSelectionnee
+     * @return liste
      */
     public ArrayList<String> afficherRes(String requeteSelectionnee) throws SQLException {
         ArrayList<String> liste = null;
@@ -929,7 +931,7 @@ public class Fenetre2 extends JFrame implements ActionListener, ItemListener {
     /**
      *
      * Pour gerer les actions sur items d'une liste on utilise la methode
-     * itemStateChanged
+     * itemStateChangedo
      */
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
