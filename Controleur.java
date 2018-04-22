@@ -56,7 +56,7 @@ public class Controleur implements ActionListener{
      * Pour gerer les actions sur les boutons on utilise la fonction
      * actionPerformed
      *
-     * @param evt
+     * @param e : appui sur les boutons
      */
      @Override
     public void actionPerformed(ActionEvent e) {
